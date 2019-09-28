@@ -30,27 +30,31 @@ public class Pieza {
         }
     }
 
+    //IMPORTANTE. La creacion de las fichas esta hecha a proposito para que el bit importante se encuentre al principio de la matriz,
+    // por lo que en la m(0,0) encontraremo la x del bit importante y en la m(0,1) encontraremos la y de este. El bit importante es el
+    // bit que cuando se rota una figura este queda fijo en su posicion (podriamos decir que hace de eje)
+
     private void crearPieza1(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{3, 21}, {4, 21}, {5, 21}, {6, 21}};
+        this.matrizCoords = new int[][]{{4, 21},{3, 21}, {5, 21}, {6, 21}};
         this.rota = true;
     }
 
     private void crearPieza2(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{3,21},{4,21},{5,21},{4,22}};
+        this.matrizCoords = new int[][]{{4,21}, {3,21},{5,21},{4,22}};
         this.rota = true;
     }
 
     private void crearPieza3(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{3,21},{4,21},{5,21},{3,22}};
+        this.matrizCoords = new int[][]{{4,21}, {3,21},{5,21},{3,22}};
         this.rota = true;
     }
 
     private void crearPieza4(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{3,21},{4,21},{5,21},{5,22}};
+        this.matrizCoords = new int[][]{{4,21}, {3,21},{5,21},{5,22}};
         this.rota = true;
     }
 
@@ -62,13 +66,13 @@ public class Pieza {
 
     private void crearPieza6(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{3,21},{4,21},{4,22},{5,22}};
+        this.matrizCoords = new int[][]{{4,21}, {3,21},{4,22},{5,22}};
         this.rota = true;
     }
 
     private void crearPieza7(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{3,22},{4,22},{4,21},{5,21}};
+        this.matrizCoords = new int[][]{{4,22}, {3,22},{4,21},{5,21}};
         this.rota = true;
     }
 
@@ -85,6 +89,6 @@ public class Pieza {
     }
 
     public void desplazarDer(){
-        
+
     }
 }
