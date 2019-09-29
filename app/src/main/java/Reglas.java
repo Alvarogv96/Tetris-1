@@ -1,9 +1,9 @@
 public class Reglas {
-    public boolean permisoDesplazamintoDer(int [][] matrizCoords){
+    public boolean permisoDesplazamientoDer(int [][] matrizCoords){
         boolean permiso = true;
 
         for(int i = 0; i < matrizCoords.length; i++){
-            if (matrizCoords[i][0] > 10){
+            if (matrizCoords[i][0] > 9){
                 permiso = false;
             }
         }
@@ -11,7 +11,7 @@ public class Reglas {
         return permiso;
     }
 
-    public boolean permisoDesplazamintoIzq(int [][] matrizCoords){
+    public boolean permisoDesplazamientoIzq(int [][] matrizCoords){
         boolean permiso = true;
 
         for(int i = 0; i < matrizCoords.length; i++){
