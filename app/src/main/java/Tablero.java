@@ -12,4 +12,9 @@ public class Tablero {
             this.matrizTablero[matrizCoords[i][0]][matrizCoords[i][1]] = color;
         }
     }
+    public void vaciarFila (int fila){
+        for(int j = 0; j < matrizTablero.length; j++){
+            this.matrizTablero[fila][j] = 0;
+        }
+    }
 }

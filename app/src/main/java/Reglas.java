@@ -34,7 +34,8 @@ public class Reglas {
         return tope;
     }
 
-    public void filaCompleta (int [][] matrizTablero){
+    public boolean filaCompleta (int [][] matrizTablero, Tablero tablero){
+        boolean resultado = false;
         for (int i = matrizTablero.length; i > 0; i--){
             boolean incompleta = false;
             for(int j = 0; j < matrizTablero.length; j++){
@@ -43,9 +44,11 @@ public class Reglas {
                 }
             }
             if(!incompleta){
-                //Juego.boorarFila(j);
+                resultado = true;
+                tablero.vaciarFila(i);
             }
         }
+        return resultado;
     }
 
 }
