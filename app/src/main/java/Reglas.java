@@ -1,21 +1,30 @@
 public class Reglas {
-    public boolean permisoDesplazamientoDer(int [][] matrizCoords){
+
+    //Las coordenadas para realizar las comprobaciones hay que pasarlas desplazadas, es decir con las coordenadas destino deseadas.
+    public boolean permisoDesplazamiento(int [][] matrizCoords, int [][] matrizTablero){
         boolean permiso = true;
 
         for(int i = 0; i < matrizCoords.length; i++){
-            if (matrizCoords[i][0] > 9){
+            if (matrizCoords[i][0] > 9 || matrizCoords[i][0] < 0){
                 permiso = false;
+            }
+        }
+        if(permiso){
+            for(int i = 0; i < matrizCoords.length; i++){
+                if(matrizTablero[matrizCoords[i][0]][matrizCoords[i][1]] != 0){
+                    permiso = false;
+                }
             }
         }
 
         return permiso;
     }
 
-    public boolean permisoDesplazamientoIzq(int [][] matrizCoords){
+    public boolean permisoDesplazamientoInferior(int [][] matrizCoords, int [][] matrizTablero){
         boolean permiso = true;
 
-        for(int i = 0; i < matrizCoords.length; i++){
-            if (matrizCoords[i][0] < 0){
+        for(int j = 0; j < matrizCoords.length; j++){
+            if(matrizTablero[matrizCoords[0][j]][matrizCoords[1][j]] != 0){
                 permiso = false;
             }
         }
@@ -36,16 +45,18 @@ public class Reglas {
 
     public boolean filaCompleta (int [][] matrizTablero, Tablero tablero){
         boolean resultado = false;
-        for (int i = matrizTablero.length; i > 0; i--){
-            boolean incompleta = false;
-            for(int j = 0; j < matrizTablero.length; j++){
-                if(matrizTablero[i][j] == 0){
-                    incompleta = true;
+        for (int i = 23; i >= 0; i--){
+            if(!resultado){
+                boolean incompleta = false;
+                for(int j = 0; j < matrizTablero.length; j++){
+                    if(matrizTablero[i][j] == 0){
+                        incompleta = true;
+                    }
                 }
-            }
-            if(!incompleta){
-                resultado = true;
-                tablero.vaciarFila(i);
+                if(!incompleta){
+                    resultado = true;
+                    tablero.vaciarFila(i);
+                }
             }
         }
         return resultado;
