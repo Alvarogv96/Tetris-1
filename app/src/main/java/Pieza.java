@@ -39,6 +39,8 @@ public class Pieza {
     // por lo que en la m(0,0) encontraremo la x del bit importante y en la m(0,1) encontraremos la y de este. El bit importante es el
     // bit que cuando se rota una figura este queda fijo en su posicion (podriamos decir que hace de eje)
 
+    //primera coordenada fila, segunda columnas
+
     private void crearPieza1(int color) {
         this.color = color;
         this.matrizCoords = new int[][]{{3,4},{3, 3}, {3, 5}, {3, 6}};
