@@ -2,7 +2,7 @@ public class Tablero {
     private int [][] matrizTablero;
 
     public Tablero(){
-        this.matrizTablero = new int[9][23];
+        this.matrizTablero = new int[24][10];
     }
 
     //Este método tendrá que ser  llamado 2 veces, 1 para mover la pieza, y otra para borrar la pieza de su posición anterior, es decir pasándole un 0 como color

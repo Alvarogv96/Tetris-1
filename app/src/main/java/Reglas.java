@@ -5,13 +5,13 @@ public class Reglas {
         boolean permiso = true;
 
         for(int i = 0; i < matrizCoords.length; i++){
-            if (matrizCoords[i][0] > 9 || matrizCoords[i][0] < 0){
+            if (matrizCoords[i][1] > 9 | matrizCoords[i][1] < 0){
                 permiso = false;
             }
         }
         if(permiso){
             for(int i = 0; i < matrizCoords.length; i++){
-                if(matrizTablero[matrizCoords[i][0]][matrizCoords[i][1]] != 0){
+                if(matrizTablero[matrizCoords[i][1]][matrizCoords[i][0]] != 0){
                     permiso = false;
                 }
             }
@@ -24,7 +24,7 @@ public class Reglas {
         boolean permiso = true;
 
         for(int j = 0; j < matrizCoords.length; j++){
-            if(matrizTablero[matrizCoords[0][j]][matrizCoords[1][j]] != 0){
+            if(matrizTablero[matrizCoords[j][1]][matrizCoords[j][0]] != 0){
                 permiso = false;
             }
         }
@@ -32,11 +32,11 @@ public class Reglas {
         return permiso;
     }
 
-    public boolean topeInferior(int [][] matrizCoords){
+    public boolean superaTopeInferior(int [][] matrizCoords){
         boolean tope = false;
 
         for (int i = 0; i < matrizCoords.length; i++){
-            if(matrizCoords[i][1] > 23){
+            if(matrizCoords[i][0] > 23){
                 tope = true;
             }
         }
