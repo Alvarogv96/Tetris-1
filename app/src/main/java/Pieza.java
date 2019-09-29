@@ -7,31 +7,30 @@ public class Pieza {
     private final int posicionX = 0;
     private final int posicionY = 1;
     private final int posicionBitImportante = 0;
-    //private final int numeroBloquesPiezas = 4;
 
     public Pieza(int tipo){
         switch (tipo){
             case 1:
                 this.crearPieza1(1);
-            break;
+                break;
             case 2:
                 this.crearPieza2(2);
-            break;
+                break;
             case 3:
                 this.crearPieza3(3);
-            break;
+                break;
             case 4:
                 this.crearPieza4(4);
-            break;
+                break;
             case 5:
                 this.crearPieza5(5);
-            break;
+                break;
             case 6:
                 this.crearPieza6(6);
-            break;
+                break;
             case 7:
                 this.crearPieza7(7);
-            break;
+                break;
             default:
         }
     }
@@ -42,44 +41,48 @@ public class Pieza {
 
     private void crearPieza1(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{4, 21},{3, 21}, {5, 21}, {6, 21}};
+        this.matrizCoords = new int[][]{{3,4},{3, 3}, {3, 5}, {3, 6}};
         this.rota = true;
     }
 
     private void crearPieza2(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{4,21}, {3,21},{5,21},{4,22}};
+        this.matrizCoords = new int[][]{{3,4}, {3,3},{3,5},{2,4}};
         this.rota = true;
     }
 
     private void crearPieza3(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{4,21}, {3,21},{5,21},{3,22}};
+        this.matrizCoords = new int[][]{{3,4}, {3,3},{3,5},{2,3}};
         this.rota = true;
     }
 
     private void crearPieza4(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{4,21}, {3,21},{5,21},{5,22}};
+        this.matrizCoords = new int[][]{{3,4}, {3,3},{3,5},{2,5}};
         this.rota = true;
     }
 
     private void crearPieza5(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{4,21},{5,21},{4,22},{5,22}};
+        this.matrizCoords = new int[][]{{3,4},{3,5},{2,4},{2,5}};
         this.rota = false;
     }
 
     private void crearPieza6(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{4,21}, {3,21},{4,22},{5,22}};
+        this.matrizCoords = new int[][]{{3,4}, {3,3},{2,4},{2,5}};
         this.rota = true;
     }
 
     private void crearPieza7(int color) {
         this.color = color;
-        this.matrizCoords = new int[][]{{4,22}, {3,22},{4,21},{5,21}};
+        this.matrizCoords = new int[][]{{3,4}, {3,3},{2,2},{2,3}};
         this.rota = true;
+    }
+
+    public int[][] getCoords(){
+        return this.matrizCoords;
     }
 
     private boolean[][] convertirAMatriz(){
@@ -97,7 +100,7 @@ public class Pieza {
 
 
     private int[][] convertirAPieza(boolean[][] matrizAux2){
-        int[][] matrizCoordsAux = new int[2][4];
+        int[][] matrizCoordsAux = new int[4][2];
 
         int auxX = this.matrizCoords[this.posicionBitImportante][this.posicionX] - this.centroMatrizX;
         int auxY = this.matrizCoords[this.posicionBitImportante][this.posicionY] - this.centroMatrizY;
@@ -124,37 +127,54 @@ public class Pieza {
     }
 
     public void rotarIzq(){
-        boolean[][] matrizAux1 = this.convertirAMatriz();
-        boolean[][] matrizAxu2 = new boolean[5][5];
+        if(this.rota){
+            boolean[][] matrizAux1 = this.convertirAMatriz();
+            boolean[][] matrizAxu2 = new boolean[5][5];
 
-        for(int i=0;i<this.matrizCoords.length;i++){
-            for(int j=0;j<this.matrizCoords.length;j++){
-                matrizAxu2[i][j] = matrizAux1[j][i];
+            for(int i=0;i<matrizAux1.length;i++){
+                for(int j=0;j<matrizAux1.length;j++){
+                    matrizAxu2[i][j] = matrizAux1[j][i];
+                }
             }
-        }
 
-        this.matrizCoords = convertirAPieza(matrizAxu2);
+            this.matrizCoords = convertirAPieza(matrizAxu2);
+        }
     }
 
 
     public void rotarDer(){
-        boolean[][] matrizAux1 = this.convertirAMatriz();
-        boolean[][] matrizAxu2 = new boolean[5][5];
+        if(this.rota){
+            boolean[][] matrizAux1 = this.convertirAMatriz();
+            boolean[][] matrizAxu2 = new boolean[5][5];
 
-        for(int i=0;i<this.matrizCoords.length;i++){
-            for(int j=0;j<this.matrizCoords.length;j++){
-                matrizAxu2[(this.matrizCoords.length - 1) - i][j] = matrizAux1[i][j];
+            for(int i=0;i<matrizAux1.length;i++){
+                for(int j=0;j<matrizAux1.length;j++){
+                    matrizAxu2[i][(matrizAux1.length - 1) - j] = matrizAux1[j][i];
+                }
             }
-        }
 
-        this.matrizCoords = convertirAPieza(matrizAxu2);
+            this.matrizCoords = convertirAPieza(matrizAxu2);
+        }
     }
+
 
     public void desplazarIzq(){
-
+        for(int i=0;i<this.matrizCoords.length;i++){
+            this.matrizCoords[i][this.posicionY]--;
+        }
     }
 
-    public void desplazarDer(){
 
+    public void desplazarDer(){
+        for(int i=0;i<this.matrizCoords.length;i++){
+            this.matrizCoords[i][this.posicionY]++;
+        }
+    }
+
+
+    public void desplazarAbajo(){
+        for(int i=0;i<this.matrizCoords.length;i++){
+            this.matrizCoords[i][this.posicionX]++;
+        }
     }
 }
