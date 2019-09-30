@@ -1,7 +1,5 @@
 public class Pieza {
-<<<<<<< HEAD
 
-=======
     private int[][] matrizCoords;
     private int color;
     private boolean rota;
@@ -182,5 +180,5 @@ public class Pieza {
             this.matrizCoords[i][this.posicionX]++;
         }
     }
->>>>>>> DaniFuenteBranch
+
 }
