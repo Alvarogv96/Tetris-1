@@ -87,6 +87,10 @@ public class Pieza {
         return this.matrizCoords;
     }
 
+    public int getColor(){
+        return this.color;
+    }
+
     private boolean[][] convertirAMatriz(){
         boolean[][] matrizAux1 = new boolean[5][5];
 
