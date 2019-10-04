@@ -405,8 +405,7 @@ public class VistaTablero extends AppCompatActivity {
 
     public void cambiarSiguiente(int pieza){
         ImageView aux = (ImageView) findViewById(R.id.siguientePieza);
-        String source = "@drawable/imgs/";  // where myresource (without the extension) is the file
-
+        String source = "@drawable/imgs/";
 
         switch(pieza){
             case 1:
