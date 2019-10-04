@@ -10,43 +10,61 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start"
+            android:visibility="visible"
+            android:onClick="iniciarJuego" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="bottom">
-
-        <ImageButton
-            android:id="@+id/imageButton1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="white"
-            app:srcCompat="@drawable/rotarDer"
-            android:contentDescription="TODO" />
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="white"
-            app:srcCompat="@drawable/desplazarIzq"
-            android:contentDescription="TODO" />
-
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="white"
-            app:srcCompat="@drawable/desplazarDer"
-            android:contentDescription="TODO" />
 
         <ImageButton
             android:id="@+id/imageButton4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="white"
-            app:srcCompat="@drawable/rotarIzq"
-            android:contentDescription="TODO" />
+            android:onClick="pulsadoRotacionIzq"
+            android:background="#FFFFFF"
+            app:srcCompat="@drawable/rotarizquierda"
+            android:contentDescription="@string/app_name" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="pulsadoDeplazamientoIzq"
+            android:background="#FFFFFF"
+            app:srcCompat="@drawable/desplazarizquierda"
+            android:contentDescription="@string/app_name" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="pulsadoDesplazamientoDer"
+            android:background="#FFFFFF"
+            app:srcCompat="@drawable/desplazarderecha"
+            android:contentDescription="@string/app_name" />
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:onClick="pulsadoRotacionDer"
+            app:srcCompat="@drawable/rotarderecha"
+            android:contentDescription="@string/app_name" />
 
     </LinearLayout>
 
@@ -1477,7 +1495,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.175"
         app:srcCompat="@color/colorAccent"
-        android:contentDescription="TODO" />
+        android:contentDescription="@string/app_name" />
 
     <TextView
         android:id="@+id/textView"
@@ -1485,7 +1503,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="9dp"
-        android:text=" Next "
+        android:text="@string/next"
         app:layout_constraintBottom_toTopOf="@+id/siguientePieza"
         app:layout_constraintEnd_toStartOf="@+id/tableLayout"
         app:layout_constraintStart_toStartOf="parent" />

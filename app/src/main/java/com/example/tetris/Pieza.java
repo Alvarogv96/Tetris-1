@@ -1,3 +1,5 @@
+package com.example.tetris;
+
 public class Pieza implements Cloneable{
     private int[][] matrizCoords;
     private int color;

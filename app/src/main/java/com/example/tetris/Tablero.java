@@ -1,3 +1,5 @@
+package com.example.tetris;
+
 public class Tablero {
     private int [][] matrizTablero;
 

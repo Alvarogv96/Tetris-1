@@ -1,17 +1,20 @@
+package com.example.tetris;
+
+import android.view.View;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public class Juego {
-    private final long timer = 1000;
-    private final byte nPiezasEnElArray = 2;
-    //cada vez que coloquemos una pieza en su destino final hay que llamar en un while a la funcion booleana filaCompleta de la clase Reglas
+
+    //cada vez que coloquemos una pieza en su destino final hay que llamar en un while a la funcion booleana filaCompleta de la clase com.example.tetris.Reglas
     //por como esta programado solo se saldra del while cuanndo filaCompleta de false
     //quedaría de esta forma:
     //while(filaCompleta){
     //  puntuacion += 30;
     //}
 
-    /*public boolean checkGameOver(Tablero tablero, Reglas regla){
+    /*public boolean checkGameOver(com.example.tetris.Tablero tablero, com.example.tetris.Reglas regla){
         boolean check = false;
 
 
@@ -27,14 +30,16 @@ public class Juego {
     }
 
 
-    private Tablero hacerDesplazamiento(Pieza pieza, Tablero tablero, Reglas regla,VistaTablero vista, int opcion){
+    public Tablero hacerDesplazamiento(Pieza pieza, Tablero tablero, Reglas regla, VistaTablero vista, int opcion){
         tablero = this.borrarPieza(pieza,tablero);
         Pieza piezaAux = pieza.clone();
 
-        if(opcion == 0){    //desplazamiento izquierda
+        if(opcion < 0){                     //desplazamiento izquierda
             pieza.desplazarIzq();
-        }else{              //desplazamiento derecha
+        }else if(opcion > 0){              //desplazamiento derecha
             pieza.desplazarDer();
+        }else{
+
         }
 
         if(regla.permisoDesplazamiento(pieza.getCoords(), tablero.getMatrizTablero())){
@@ -43,19 +48,22 @@ public class Juego {
             tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
         }
 
-        vista.ActualizarTablero(tablero.getMatrizTablero());
+        vista.actualizarTablero(tablero.getMatrizTablero());
 
         return tablero;
     }
 
-    private Tablero hacerRotaciones(Pieza pieza, Tablero tablero, Reglas regla,VistaTablero vista, int opcion){
+    public Tablero hacerRotaciones(Pieza pieza, Tablero tablero, Reglas regla, VistaTablero vista, int opcion){
         tablero = this.borrarPieza(pieza, tablero);
         Pieza piezaAux = pieza.clone();
 
-        if(opcion  == 0){   //rotacion izquierda
+        if(opcion  < 0){        //rotacion izquierda
             pieza.rotarIzq();
-        }else{              //rotacion derecha
+
+        }else if (opcion > 0){  //rotacion derecha
             pieza.rotarDer();
+        } else{
+
         }
 
         if(!regla.superaTopeInferior(pieza.getCoords()) && regla.permisoDesplazamiento(pieza.getCoords(), tablero.getMatrizTablero())){
@@ -64,13 +72,13 @@ public class Juego {
             tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
         }
 
-        vista.ActualizarTablero(tablero.getMatrizTablero());
+        vista.actualizarTablero(tablero.getMatrizTablero());
 
         return tablero;
     }
 
 
-    private Tablero bajarPieza(Pieza pieza, Tablero tablero, VistaTablero vista, Reglas reglas){
+    public Tablero bajarPieza(Pieza pieza, Tablero tablero, VistaTablero vista, Reglas reglas){
         tablero = this.borrarPieza(pieza, tablero);
         Pieza piezaAux = pieza.clone();
 
@@ -82,13 +90,14 @@ public class Juego {
             tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
         }
 
-        vista.ActualizarTablero(tablero.getMatrizTablero());
+        vista.actualizarTablero(tablero.getMatrizTablero());
 
         return tablero;
     }
 
 
-    public void juego(){
+
+    /*public void jugar(){
         List<Pieza> piezas = new LinkedList<>();
 
         for(int i=0;i<this.nPiezasEnElArray;i++){
@@ -136,5 +145,7 @@ public class Juego {
 
             }
         }while(reglas.gameOver(tablero.getMatrizTablero()));
-    }
+    }*/
+
+
 }
