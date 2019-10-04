@@ -1,4 +1,4 @@
-public class Pieza {
+public class Pieza implements Cloneable{
     private int[][] matrizCoords;
     private int color;
     private boolean rota;
@@ -182,5 +182,10 @@ public class Pieza {
         for(int i=0;i<this.matrizCoords.length;i++){
             this.matrizCoords[i][this.posicionX]++;
         }
+    }
+
+    public Pieza clone(){
+        Pieza clon = new Pieza(this.color);
+        return clon;
     }
 }

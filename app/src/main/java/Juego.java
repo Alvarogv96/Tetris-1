@@ -29,7 +29,7 @@ public class Juego {
 
     private Tablero hacerDesplazamiento(Pieza pieza, Tablero tablero, Reglas regla, int opcion){
         tablero = this.borrarPieza(pieza,tablero);
-        Pieza piezaAux = pieza.clonar();
+        Pieza piezaAux = pieza.clone();
 
         if(opcion == 0){    //desplazamiento izquierda
             pieza.desplazarIzq();
@@ -48,7 +48,7 @@ public class Juego {
 
     private Tablero hacerRotaciones(Pieza pieza, Tablero tablero, Reglas regla, int opcion){
         tablero = this.borrarPieza(pieza, tablero);
-        Pieza piezaAux = pieza.clonar();
+        Pieza piezaAux = pieza.clone();
 
         if(opcion  == 0){   //rotacion izquierda
             pieza.rotarIzq();
@@ -68,7 +68,7 @@ public class Juego {
 
     private Tablero bajarPieza(Pieza pieza, Tablero tablero, Reglas reglas){
         tablero = this.borrarPieza(pieza, tablero);
-        Pieza piezaAux = pieza.clonar();
+        Pieza piezaAux = pieza.clone();
 
         pieza.desplazarAbajo();
 
