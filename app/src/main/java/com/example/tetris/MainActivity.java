@@ -2,7 +2,9 @@ package com.example.tetris;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Pausando", Toast.LENGTH_SHORT).show();
         // La actividad se detiene.
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
