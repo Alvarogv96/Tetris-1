@@ -56,7 +56,7 @@ public class Juego {
             pieza.rotarDer();
         }
 
-        if(regla.permisoDesplazamiento(pieza.getCoords(), tablero.getMatrizTablero()) && regla.superaTopeInferior(pieza.getCoords())){
+        if(!regla.superaTopeInferior(pieza.getCoords()) && regla.permisoDesplazamiento(pieza.getCoords(), tablero.getMatrizTablero())){
             tablero.actualizarTablero(pieza.getCoords(), pieza.getColor());
         }else{
             tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
@@ -88,7 +88,7 @@ public class Juego {
     }*/
 
     public void juego(){
-        List<Pieza> piezas = new LinkedList<Pieza>();
+        List<Pieza> piezas = new LinkedList<>();
 
         for(int i=0;i<this.nPiezasEnElArray;i++){
             Pieza pieza = new Pieza((int)Math.random()*7+1);
@@ -107,33 +107,33 @@ public class Juego {
             Pieza aux = new Pieza((int)Math.random()*7+1);
             piezas.add(aux);
 
-                while(reglas.permisoDesplazamientoInferior(piezas.get(0).getCoords(),tablero.getMatrizTablero())){
+            while(reglas.permisoDesplazamientoInferior(piezas.get(0).getCoords(),tablero.getMatrizTablero())){
 
-                    Pieza piezaActual = piezas.get(0);
+                Pieza piezaActual = piezas.get(0);
 
-                    long ini = 0;
-                    long fin = System.currentTimeMillis() + this.timer;
+                long ini = 0;
+                long fin = System.currentTimeMillis() + this.timer;
 
-                    while(ini<fin){
-                        ini = System.currentTimeMillis();
+                while(ini<fin){
+                    ini = System.currentTimeMillis();
 
-                        //funcion de recibir entrada de desplazamiento
-                        //funcion de comprobar desplazamiento, y realizar o declinar
-                        int opcion = 0;
+                    //funcion de recibir entrada de desplazamiento
+                    //funcion de comprobar desplazamiento, y realizar o declinar
+                    int opcion = 0;
 
-                        tablero = this.hacerDesplazamiento(piezaActual,tablero,reglas, opcion);
+                    tablero = this.hacerDesplazamiento(piezaActual,tablero,reglas, opcion);
 
-                        //funcion de recibir entrada de rotacion
-                        //funcion de comprobar ratacion, y realizar o declinar
+                    //funcion de recibir entrada de rotacion
+                    //funcion de comprobar ratacion, y realizar o declinar
 
-                        tablero = this.hacerRotaciones(piezaActual,tablero, reglas, opcion);
+                    tablero = this.hacerRotaciones(piezaActual,tablero, reglas, opcion);
 
-                    }
-
-                    tablero = this.bajarPieza(piezaActual, tablero, reglas);
-
-                    //bajarFila() sePermiteBajarFila???
                 }
+
+                tablero = this.bajarPieza(piezaActual, tablero, reglas);
+
+                //bajarFila() sePermiteBajarFila???
+            }
         }while(reglas.gameOver(tablero.getMatrizTablero()));
     }
 }

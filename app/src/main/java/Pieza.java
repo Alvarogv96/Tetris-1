@@ -10,6 +10,8 @@ public class Pieza implements Cloneable{
 
     public Pieza(int tipo){
         switch (tipo){
+            case 0:
+                this.crearPieza0();
             case 1:
                 this.crearPieza1(1);
                 break;
@@ -40,6 +42,12 @@ public class Pieza implements Cloneable{
     // bit que cuando se rota una figura este queda fijo en su posicion (podriamos decir que hace de eje)
 
     //primera coordenada fila, segunda columnas
+
+    private void crearPieza0(){
+        this.color=0;
+        this.matrizCoords = new int[4][2];
+        this.rota = false;
+    }
 
     private void crearPieza1(int color) {
         this.color = color;
@@ -184,8 +192,18 @@ public class Pieza implements Cloneable{
         }
     }
 
+    @Override
     public Pieza clone(){
-        Pieza clon = new Pieza(this.color);
+        Pieza clon = new Pieza(0);
+
+        for(int i=0;i<this.matrizCoords.length;i++){
+            clon.matrizCoords[i][0] = this.matrizCoords[i][0];
+            clon.matrizCoords[i][1] = this.matrizCoords[i][1];
+        }
+
+        clon.color = this.color;
+        clon.rota = this.rota;
+
         return clon;
     }
 }
