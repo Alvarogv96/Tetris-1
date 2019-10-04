@@ -1,4 +1,7 @@
 
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tetris.R;
@@ -389,18 +392,51 @@ public class VistaTablero extends AppCompatActivity {
         ListaCeldas.add(ayuda);
     }
 
-    public void ActualizarTablero(int[][] matriz){
+    public void actualizarTablero(int[][] matriz){
         int index = 0;
 
         for (int i = 3; i<=23; i++){
             for (int j=0;j<=9;j++){
                 TextView auxiliar  = ListaCeldas.get(index);
-                CambiarColor(matriz[i][j],auxiliar);
+                cambiarColor(matriz[i][j],auxiliar);
             }
         }
     }
 
-    public void CambiarColor(int color, TextView vista){
+    public void cambiarSiguiente(int pieza){
+        ImageView aux = (ImageView) findViewById(R.id.siguientePieza);
+        String source = "@drawable/imgs/";
+
+        switch(pieza){
+            case 1:
+                source = source + "I";
+                        break;
+            case 2:
+                source = source + "T";
+                break;
+            case 3:
+                source = source + "J";
+                break;
+            case 4:
+                source = source + "L";
+                break;
+            case 5:
+                source = source + "O";
+                break;
+            case 6:
+                source = source + "S";
+                break;
+            case 7:
+                source = source + "Z";
+                break;
+        }
+        int imageResource = getResources().getIdentifier(source, null, getPackageName());
+
+        Drawable res = getResources().getDrawable(imageResource);
+        aux.setImageDrawable(res);
+    }
+
+    public void cambiarColor(int color, TextView vista){
         switch(color) {
             case 0:
                 vista.setBackgroundColor(0Xffffff);
