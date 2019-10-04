@@ -407,7 +407,6 @@ public class VistaTablero extends AppCompatActivity {
         ImageView aux = (ImageView) findViewById(R.id.siguientePieza);
         String source = "@drawable/imgs/";  // where myresource (without the extension) is the file
 
-        int imageResource = getResources().getIdentifier(source, null, getPackageName());
 
         switch(pieza){
             case 1:
@@ -432,6 +431,8 @@ public class VistaTablero extends AppCompatActivity {
                 source = source + "Z";
                 break;
         }
+        int imageResource = getResources().getIdentifier(source, null, getPackageName());
+
         Drawable res = getResources().getDrawable(imageResource);
         aux.setImageDrawable(res);
     }
