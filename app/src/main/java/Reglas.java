@@ -11,7 +11,7 @@ public class Reglas {
         }
         if(permiso){
             for(int i = 0; i < matrizCoords.length; i++){
-                if(matrizTablero[matrizCoords[i][1]][matrizCoords[i][0]] != 0){
+                if(matrizTablero[matrizCoords[i][0]][matrizCoords[i][1]] != 0){
                     permiso = false;
                 }
             }
@@ -24,7 +24,7 @@ public class Reglas {
         boolean permiso = true;
 
         for(int j = 0; j < matrizCoords.length; j++){
-            if(matrizTablero[matrizCoords[j][1]][matrizCoords[j][0]] != 0){
+            if(matrizTablero[matrizCoords[j][0]][matrizCoords[j][1]] != 0){
                 permiso = false;
             }
         }
@@ -60,6 +60,18 @@ public class Reglas {
             }
         }
         return resultado;
+    }
+    
+    public boolean gameOver(int [][] matrizTablero){
+        boolean fin = false;
+        
+        for(int i = 0; i < 10; i++){
+            if(matrizTablero[3][i] !=0){
+                fin = true;
+            }
+        }
+        
+        return fin;
     }
 
 }

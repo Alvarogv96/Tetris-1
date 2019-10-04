@@ -33,4 +33,8 @@ public class Tablero {
             }
         }
     }
+
+    public int[][] getMatrizTablero() {
+        return matrizTablero;
+    }
 }
