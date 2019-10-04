@@ -74,16 +74,4 @@ public class Reglas {
         return fin;
     }
 
-    public boolean gameOver(int [][] matrizTablero){
-        boolean fin = false;
-
-        for(int i = 0; i < 10; i++){
-            if(matrizTablero[3][i] !=0){
-                fin = true;
-            }
-        }
-
-        return fin;
-    }
-
 }
