@@ -27,7 +27,7 @@ public class Juego {
     }
 
 
-    private Tablero hacerDesplazamiento(Pieza pieza, Tablero tablero, Reglas regla, int opcion){
+    private Tablero hacerDesplazamiento(Pieza pieza, Tablero tablero, Reglas regla,VistaTablero vista, int opcion){
         tablero = this.borrarPieza(pieza,tablero);
         Pieza piezaAux = pieza.clone();
 
@@ -43,10 +43,12 @@ public class Juego {
             tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
         }
 
+        vista.ActualizarTablero(tablero.getMatrizTablero());
+
         return tablero;
     }
 
-    private Tablero hacerRotaciones(Pieza pieza, Tablero tablero, Reglas regla, int opcion){
+    private Tablero hacerRotaciones(Pieza pieza, Tablero tablero, Reglas regla,VistaTablero vista, int opcion){
         tablero = this.borrarPieza(pieza, tablero);
         Pieza piezaAux = pieza.clone();
 
@@ -62,11 +64,13 @@ public class Juego {
             tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
         }
 
+        vista.ActualizarTablero(tablero.getMatrizTablero());
+
         return tablero;
     }
 
 
-    private Tablero bajarPieza(Pieza pieza, Tablero tablero, Reglas reglas){
+    private Tablero bajarPieza(Pieza pieza, Tablero tablero, VistaTablero vista, Reglas reglas){
         tablero = this.borrarPieza(pieza, tablero);
         Pieza piezaAux = pieza.clone();
 
@@ -78,14 +82,11 @@ public class Juego {
             tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
         }
 
+        vista.ActualizarTablero(tablero.getMatrizTablero());
+
         return tablero;
     }
 
-    /*public void insertarFichaEnTablero(Pieza pieza,Tablero tablero){
-        for(int i=0;i<pieza.getCoords().length){
-
-        }
-    }*/
 
     public void juego(){
         List<Pieza> piezas = new LinkedList<>();
@@ -98,6 +99,7 @@ public class Juego {
 
         Tablero tablero = new Tablero();
         Reglas reglas = new Reglas();
+        VistaTablero vista = new VistaTablero();
 
 
         do{
@@ -121,18 +123,17 @@ public class Juego {
                     //funcion de comprobar desplazamiento, y realizar o declinar
                     int opcion = 0;
 
-                    tablero = this.hacerDesplazamiento(piezaActual,tablero,reglas, opcion);
+                    tablero = this.hacerDesplazamiento(piezaActual,tablero,reglas,vista, opcion);
 
                     //funcion de recibir entrada de rotacion
                     //funcion de comprobar ratacion, y realizar o declinar
 
-                    tablero = this.hacerRotaciones(piezaActual,tablero, reglas, opcion);
+                    tablero = this.hacerRotaciones(piezaActual,tablero, reglas, vista, opcion);
 
                 }
 
-                tablero = this.bajarPieza(piezaActual, tablero, reglas);
+                tablero = this.bajarPieza(piezaActual, tablero, vista,reglas);
 
-                //bajarFila() sePermiteBajarFila???
             }
         }while(reglas.gameOver(tablero.getMatrizTablero()));
     }
