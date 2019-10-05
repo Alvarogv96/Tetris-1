@@ -11,6 +11,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    Juego proceso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +20,25 @@ public class MainActivity extends AppCompatActivity {
         // La actividad se crea.
 
 
-        Juego proceso = new Juego();
-        proceso.start();
+        this.proceso = new Juego();
+        this.proceso.start();
     }
 
+    public void desplazaIzq(View vista){
+        this.proceso.pulsadoDeplazamientoIzq();
+    }
+
+    public void desplazaDer(View vista){
+        this.proceso.pulsadoDesplazamientoDer();
+    }
+
+    public void rotaIzq(View vista){
+        this.proceso.pulsadoRotacionIzq();
+    }
+
+    public void rotaDer(View vista){
+        this.proceso.pulsadoRotacionDer();
+    }
 
     @Override
     protected void onStart() {

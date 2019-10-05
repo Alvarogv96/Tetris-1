@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FFFFFF"
+            android:onClick="rotaIzq"
             app:srcCompat="@drawable/rotarizquierda"
             android:contentDescription="@string/app_name" />
 
@@ -28,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FFFFFF"
+            android:onClick="desplazaIzq"
             app:srcCompat="@drawable/desplazarizquierda"
             android:contentDescription="@string/app_name" />
 
@@ -37,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FFFFFF"
+            android:onClick="desplazaDer"
             app:srcCompat="@drawable/desplazarderecha"
             android:contentDescription="@string/app_name" />
 
@@ -46,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FFFFFF"
+            android:onClick="rotaDer"
             app:srcCompat="@drawable/rotarderecha"
             android:contentDescription="@string/app_name" />
 

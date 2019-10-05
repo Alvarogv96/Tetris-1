@@ -22,22 +22,22 @@ public class Juego extends Thread{
 
     //*****Parte de funciones llamadas por botones*****
 
-    synchronized public void pulsadoDeplazamientoIzq(View vista){
+    synchronized public void pulsadoDeplazamientoIzq(){
         this.listaMovimientos.add(0);
         this.listaMovimientos.notify();
     }
 
-    synchronized public void pulsadoDesplazamientoDer(View vista){
+    synchronized public void pulsadoDesplazamientoDer(){
         this.listaMovimientos.add(1);
         this.listaMovimientos.notify();
     }
 
-    synchronized public void pulsadoRotacionIzq(View vista){
+    synchronized public void pulsadoRotacionIzq(){
         this.listaMovimientos.add(2);
         this.listaMovimientos.notify();
     }
 
-    synchronized public void pulsadoRotacionDer(View vista){
+    synchronized public void pulsadoRotacionDer(){
         this.listaMovimientos.add(3);
         this.listaMovimientos.notify();
     }
@@ -121,8 +121,13 @@ public class Juego extends Thread{
 
     private Tablero seleccionarMovimiento(Pieza piezaActual, Tablero tablero, Reglas reglas, VistaTablero vista) throws InterruptedException {
 
-        if(this.listaMovimientos.isEmpty()){
-            wait(this.timer);
+        long ini = 0;
+        long fin = System.currentTimeMillis() + this.timer;
+
+        while(ini<fin){
+            ini = System.currentTimeMillis();       //poner al principio del ciclo while o despues???
+
+            wait();
 
             for(Integer movimiento:this.listaMovimientos){
                 switch (movimiento){
@@ -140,6 +145,7 @@ public class Juego extends Thread{
                         break;
                 }
             }
+
         }
 
         this.listaMovimientos.clear();
@@ -180,7 +186,7 @@ public class Juego extends Thread{
                 //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
                 try{
-                    this.seleccionarMovimiento(piezaActual, tablero, reglas, vista);
+                    tablero = this.seleccionarMovimiento(piezaActual, tablero, reglas, vista);
                 }catch (InterruptedException ex){
 
                 }
