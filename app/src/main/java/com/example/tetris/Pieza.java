@@ -1,3 +1,5 @@
+package com.example.tetris;
+
 public class Pieza implements Cloneable{
     private int[][] matrizCoords;
     private int color;
@@ -12,6 +14,7 @@ public class Pieza implements Cloneable{
         switch (tipo){
             case 0:
                 this.crearPieza0();
+                break;
             case 1:
                 this.crearPieza1(1);
                 break;

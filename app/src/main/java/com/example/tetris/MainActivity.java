@@ -2,18 +2,45 @@ package com.example.tetris;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.content.pm.ActivityInfo;
+import android.view.View;
 import android.widget.Toast;
+import java.util.LinkedList;
+import java.util.List;
+import android.widget.TextView;
+
 
 
 public class MainActivity extends AppCompatActivity {
 
+    Juego proceso;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // La actividad se crea.
+        this.proceso = new Juego();
+        this.proceso.start();
     }
+
+    public void desplazaIzq(View vista){
+        this.proceso.pulsadoDeplazamientoIzq();
+    }
+
+    public void desplazaDer(View vista){
+        this.proceso.pulsadoDesplazamientoDer();
+    }
+
+    public void rotaIzq(View vista){
+        this.proceso.pulsadoRotacionIzq();
+    }
+
+    public void rotaDer(View vista){
+        this.proceso.pulsadoRotacionDer();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -36,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Pausando", Toast.LENGTH_SHORT).show();
         // La actividad se detiene.
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
