@@ -60,10 +60,8 @@ public class Juego extends Thread{
 
         if(opcion < 0){                     //desplazamiento izquierda
             pieza.desplazarIzq();
-        }else if(opcion > 0){              //desplazamiento derecha
+        }else{              //desplazamiento derecha
             pieza.desplazarDer();
-        }else{
-
         }
 
         if(regla.permisoDesplazamiento(pieza.getCoords(), tablero.getMatrizTablero())){
@@ -81,13 +79,11 @@ public class Juego extends Thread{
         tablero = this.borrarPieza(pieza, tablero);
         Pieza piezaAux = pieza.clone();
 
-        if(opcion  < 0){        //rotacion izquierda
+        if(opcion  == 0){        //rotacion izquierda
             pieza.rotarIzq();
 
-        }else if (opcion > 0){  //rotacion derecha
+        }else{                  //rotacion derecha
             pieza.rotarDer();
-        } else{
-
         }
 
         if(!regla.superaTopeInferior(pieza.getCoords()) && regla.permisoDesplazamiento(pieza.getCoords(), tablero.getMatrizTablero())){
@@ -123,36 +119,32 @@ public class Juego extends Thread{
     //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
 
-    private void seleccionarMovimiento(Pieza piezaActual, Tablero tablero, Reglas reglas, VistaTablero vista) throws InterruptedException {
-
-        long ini = 0;
-        long fin = System.currentTimeMillis() + this.timer;
-
-        if()
-
-
-        while(ini<fin){
-            ini = System.currentTimeMillis();
-
-
-        }
+    private Tablero seleccionarMovimiento(Pieza piezaActual, Tablero tablero, Reglas reglas, VistaTablero vista) throws InterruptedException {
 
         if(this.listaMovimientos.isEmpty()){
             wait(this.timer);
+
+            for(Integer movimiento:this.listaMovimientos){
+                switch (movimiento){
+                    case 0:
+                        tablero = this.hacerDesplazamiento(piezaActual,tablero,reglas,vista,0);
+                        break;
+                    case 1:
+                        tablero = this.hacerDesplazamiento(piezaActual,tablero,reglas,vista,1);
+                        break;
+                    case 2:
+                        tablero = this.hacerRotaciones(piezaActual,tablero,reglas,vista,0);
+                        break;
+                    case 3:
+                        tablero = this.hacerRotaciones(piezaActual,tablero,reglas,vista,1);
+                        break;
+                }
+            }
         }
 
+        this.listaMovimientos.clear();
 
-
-        //funcion de recibir entrada de desplazamiento
-        //funcion de comprobar desplazamiento, y realizar o declinar
-        int opcion = 0;
-
-        tablero = this.hacerDesplazamiento(piezaActual,tablero,reglas,vista, opcion);
-
-        //funcion de recibir entrada de rotacion
-        //funcion de comprobar ratacion, y realizar o declinar
-
-        tablero = this.hacerRotaciones(piezaActual,tablero, reglas, vista, opcion);
+        return tablero;
     }
 
 
@@ -187,7 +179,11 @@ public class Juego extends Thread{
 
                 //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
-                this.seleccionarMovimiento(piezaActual, tablero, reglas, vista);
+                try{
+                    this.seleccionarMovimiento(piezaActual, tablero, reglas, vista);
+                }catch (InterruptedException ex){
+
+                }
 
                 //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
