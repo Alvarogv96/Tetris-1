@@ -13,7 +13,7 @@ public class Juego{
     //  puntuacion += 30;
     //}
 
-    private final long timer = 10000;
+    private final long timer = 1000;
     private final int nPiezasEnElArray = 2;
     List<Integer> listaMovimientos;             // 0 -> desplazamiento izquierda; 1 -> desplazamiento derecha; 2 -> rotacion izquierda; 3 ->rotacion derecha
     List<Pieza> piezas;
@@ -119,6 +119,22 @@ public class Juego{
         return tablero;
     }
 
+    public boolean comprobarInferiores(Pieza pieza, Tablero tablero, Reglas reglas){
+        boolean permiso = true;
+        tablero = this.borrarPieza(pieza, tablero);
+        Pieza piezaAux = pieza.clone();
+
+        pieza.desplazarAbajo();
+
+        if(!reglas.superaTopeInferior(pieza.getCoords()) && reglas.permisoDesplazamientoInferior(pieza.getCoords(), tablero.getMatrizTablero())){
+            permiso = true;
+        }else{
+            permiso = false;
+        }
+
+        return permiso;
+    }
+
 
     //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
@@ -165,7 +181,7 @@ public class Juego{
         piezas.add(pieza);
 
         do{
-            if(!reglas.permisoDesplazamientoInferior(piezaActual.getCoords(), tablero.getMatrizTablero())){
+            if(!comprobarInferiores(pieza, tablero, reglas)){
                 piezaActual = piezas.get(0);
                 piezas.remove(0);
                 tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
@@ -178,9 +194,6 @@ public class Juego{
             long ini = 0;
             long fin = System.currentTimeMillis() + this.timer;
 
-            tablero = this.bajarPieza(piezaActual, tablero, reglas);
-            MainActivity.actualizarTablero(tablero.getMatrizTablero());
-
             while(ini<fin){
                 ini = System.currentTimeMillis();
 
@@ -192,7 +205,7 @@ public class Juego{
             tablero = this.bajarPieza(piezaActual, tablero, reglas);
             MainActivity.actualizarTablero(tablero.getMatrizTablero());
 
-        }while(!reglas.gameOver(tablero.getMatrizTablero()));
+        }while(true);
     }
 
 
