@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<TextView> ListaCeldas;
     private TextView ayuda;
 
-    private final long timer = 1500;
+    private final long timer = 700;
     private final int nPiezasEnElArray = 2;
     List<Integer> listaMovimientos;
     List<Pieza> piezas;
@@ -570,18 +570,22 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean comprobarInferiores(Pieza pieza, Tablero tablero, Reglas reglas){
         boolean permiso = true;
-        tablero = this.borrarPieza(pieza, tablero);
+
+
         Pieza piezaAux = pieza.clone();
 
-        pieza.desplazarAbajo();
+        tablero.actualizarTablero(piezaAux.getCoords(), 0);
 
-        if(!reglas.superaTopeInferior(pieza.getCoords()) && reglas.permisoDesplazamientoInferior(pieza.getCoords(), tablero.getMatrizTablero())){
+        piezaAux.desplazarAbajo();
+
+        if(!reglas.superaTopeInferior(piezaAux.getCoords()) && reglas.permisoDesplazamientoInferior(piezaAux.getCoords(), tablero.getMatrizTablero())){
             permiso = true;
         }else{
             permiso = false;
         }
 
-        tablero.actualizarTablero(piezaAux.getCoords(), piezaAux.getColor());
+        tablero.actualizarTablero(pieza.getCoords(), pieza.getColor());
+
 
         return permiso;
     }
@@ -702,7 +706,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
 
-        } while (this.comprobarInferiores(piezaActual, tablero, reglas) & !reglas.gameOver(piezaActual, tablero.getMatrizTablero()));
+        } while (this.comprobarInferiores(piezaActual, tablero, reglas) | !reglas.gameOver(piezaActual, tablero.getMatrizTablero()));
 
 
 
