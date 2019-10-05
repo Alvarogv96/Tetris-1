@@ -2,13 +2,11 @@ package com.example.tetris;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.widget.Toast;
+
 import java.util.LinkedList;
 import java.util.List;
-import android.widget.TextView;
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -17,10 +15,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // La actividad se crea.
+
+
         this.proceso = new Juego();
         this.proceso.start();
     }
