@@ -1,12 +1,12 @@
 package com.example.tetris;
 
+
 import android.view.View;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Juego {
-
+public class Juego extends Thread{
     //cada vez que coloquemos una pieza en su destino final hay que llamar en un while a la funcion booleana filaCompleta de la clase com.example.tetris.Reglas
     //por como esta programado solo se saldra del while cuanndo filaCompleta de false
     //quedaría de esta forma:
@@ -14,13 +14,37 @@ public class Juego {
     //  puntuacion += 30;
     //}
 
-    /*public boolean checkGameOver(com.example.tetris.Tablero tablero, com.example.tetris.Reglas regla){
-        boolean check = false;
+    private final long timer = 1000;
+    private final int nPiezasEnElArray = 2;
+    List<Integer> listaMovimientos;             // 0 -> desplazamiento izquierda; 1 -> desplazamiento derecha; 2 -> rotacion izquierda; 3 ->rotacion derecha
 
 
 
-        return check;
-    }*/
+    //*****Parte de funciones llamadas por botones*****
+
+    synchronized public void pulsadoDeplazamientoIzq(View vista){
+        this.listaMovimientos.add(0);
+        this.listaMovimientos.notify();
+    }
+
+    synchronized public void pulsadoDesplazamientoDer(View vista){
+        this.listaMovimientos.add(1);
+        this.listaMovimientos.notify();
+    }
+
+    synchronized public void pulsadoRotacionIzq(View vista){
+        this.listaMovimientos.add(2);
+        this.listaMovimientos.notify();
+    }
+
+    synchronized public void pulsadoRotacionDer(View vista){
+        this.listaMovimientos.add(3);
+        this.listaMovimientos.notify();
+    }
+
+    //*****Parte de funciones llamadas por botones*****
+
+
 
     private Tablero borrarPieza(Pieza pieza, Tablero tablero){
 
@@ -96,9 +120,48 @@ public class Juego {
     }
 
 
+    //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
-    /*public void jugar(){
+
+    private void seleccionarMovimiento(Pieza piezaActual, Tablero tablero, Reglas reglas, VistaTablero vista) throws InterruptedException {
+
+        long ini = 0;
+        long fin = System.currentTimeMillis() + this.timer;
+
+        if()
+
+
+        while(ini<fin){
+            ini = System.currentTimeMillis();
+
+
+        }
+
+        if(this.listaMovimientos.isEmpty()){
+            wait(this.timer);
+        }
+
+
+
+        //funcion de recibir entrada de desplazamiento
+        //funcion de comprobar desplazamiento, y realizar o declinar
+        int opcion = 0;
+
+        tablero = this.hacerDesplazamiento(piezaActual,tablero,reglas,vista, opcion);
+
+        //funcion de recibir entrada de rotacion
+        //funcion de comprobar ratacion, y realizar o declinar
+
+        tablero = this.hacerRotaciones(piezaActual,tablero, reglas, vista, opcion);
+    }
+
+
+    //***** Funcion en la que se usa el wait y viene la entrada de botones*****
+
+
+    public void run(){
         List<Pieza> piezas = new LinkedList<>();
+        this.listaMovimientos = new LinkedList<>();
 
         for(int i=0;i<this.nPiezasEnElArray;i++){
             Pieza pieza = new Pieza((int)Math.random()*7+1);
@@ -122,30 +185,17 @@ public class Juego {
 
                 Pieza piezaActual = piezas.get(0);
 
-                long ini = 0;
-                long fin = System.currentTimeMillis() + this.timer;
+                //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
-                while(ini<fin){
-                    ini = System.currentTimeMillis();
+                this.seleccionarMovimiento(piezaActual, tablero, reglas, vista);
 
-                    //funcion de recibir entrada de desplazamiento
-                    //funcion de comprobar desplazamiento, y realizar o declinar
-                    int opcion = 0;
-
-                    tablero = this.hacerDesplazamiento(piezaActual,tablero,reglas,vista, opcion);
-
-                    //funcion de recibir entrada de rotacion
-                    //funcion de comprobar ratacion, y realizar o declinar
-
-                    tablero = this.hacerRotaciones(piezaActual,tablero, reglas, vista, opcion);
-
-                }
+                //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
                 tablero = this.bajarPieza(piezaActual, tablero, vista,reglas);
 
             }
         }while(reglas.gameOver(tablero.getMatrizTablero()));
-    }*/
+    }
 
 
 }
