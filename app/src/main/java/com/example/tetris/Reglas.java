@@ -68,15 +68,16 @@ public class Reglas {
         return resultado;
     }
     
-    public boolean gameOver(int [][] matrizTablero){
+    public boolean gameOver(Pieza pieza, int [][] matrizTablero){
+
         boolean fin = false;
-        
-        for(int i = 0; i < 10; i++){
-            if(matrizTablero[3][i] !=0){
-                fin = true;
+
+            for(int i=0; i<pieza.getCoords().length;i++){
+                if(pieza.getCoords()[i][0] == 3){
+                    fin = true;
+                }
             }
-        }
-        
+
         return fin;
     }
 

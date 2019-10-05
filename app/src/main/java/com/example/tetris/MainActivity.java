@@ -2,10 +2,14 @@ package com.example.tetris;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.content.pm.ActivityInfo;
+import android.os.Handler;
+import android.text.style.UpdateLayout;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -18,9 +22,18 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Juego proceso;
+    //private Juego proceso;
     private static ArrayList<TextView> ListaCeldas;
     private TextView ayuda;
+
+    private final long timer = 1500;
+    private final int nPiezasEnElArray = 2;
+    List<Integer> listaMovimientos;
+    List<Pieza> piezas;
+    Tablero tablero;
+    Reglas reglas;
+    Handler handler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // La actividad se crea.
+
+        this.piezas = new LinkedList<>();
+        this.listaMovimientos = new LinkedList<>();
+        this.tablero = new Tablero();
+        this.reglas = new Reglas();
 
         ListaCeldas = new ArrayList<TextView>(200);
         ayuda = (TextView) findViewById(R.id.a1);
@@ -451,25 +469,246 @@ public class MainActivity extends AppCompatActivity {
         ayuda = (TextView) findViewById(R.id.j21);
         ListaCeldas.add(ayuda);
 
-        this.proceso = new Juego();
-        this.proceso.run();
     }
 
+
+
+
+    // 0 -> desplazamiento izquierda; 1 -> desplazamiento derecha; 2 -> rotacion izquierda; 3 ->rotacion derecha
+
+
+
     public void desplazaIzq(View vista){
-        this.proceso.pulsadoDeplazamientoIzq();
+        this.listaMovimientos.add(0);
     }
 
     public void desplazaDer(View vista){
-        this.proceso.pulsadoDesplazamientoDer();
+        this.listaMovimientos.add(1);
     }
 
     public void rotaIzq(View vista){
-        this.proceso.pulsadoRotacionIzq();
+        this.listaMovimientos.add(2);
     }
 
     public void rotaDer(View vista){
-        this.proceso.pulsadoRotacionDer();
+        this.listaMovimientos.add(3);
     }
+
+
+    private Tablero borrarPieza(Pieza pieza, Tablero tablero){
+
+        tablero.actualizarTablero(pieza.getCoords(),0);
+
+        return tablero;
+    }
+
+
+    public Tablero hacerDesplazamiento(Pieza pieza, Tablero tablero, Reglas regla, int opcion){
+        tablero = this.borrarPieza(pieza,tablero);
+        Pieza piezaAux = pieza.clone();
+
+        if(opcion == 0){                     //desplazamiento izquierda
+            pieza.desplazarIzq();
+        }else if(opcion == 1){              //desplazamiento derecha
+            pieza.desplazarDer();
+        }
+
+        if(regla.permisoDesplazamiento(pieza.getCoords(), tablero.getMatrizTablero())){
+            tablero.actualizarTablero(pieza.getCoords(),pieza.getColor());
+        }else{
+            tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
+        }
+
+        this.actualizarTablero(tablero.getMatrizTablero());
+
+
+
+        return tablero;
+    }
+
+    public Tablero hacerRotaciones(Pieza pieza, Tablero tablero, Reglas regla, int opcion){
+        tablero = this.borrarPieza(pieza, tablero);
+        Pieza piezaAux = pieza.clone();
+
+        if(opcion  == 2){        //rotacion izquierda
+            pieza.rotarIzq();
+
+        }else if (opcion == 3){                  //rotacion derecha
+            pieza.rotarDer();
+        }
+
+        if(!regla.superaTopeInferior(pieza.getCoords()) && regla.permisoDesplazamiento(pieza.getCoords(), tablero.getMatrizTablero())){
+            tablero.actualizarTablero(pieza.getCoords(), pieza.getColor());
+        }else{
+            tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
+        }
+
+        this.actualizarTablero(tablero.getMatrizTablero());
+
+
+        return tablero;
+    }
+
+
+    public Tablero bajarPieza(Pieza pieza, Tablero tablero, Reglas reglas){
+        tablero = this.borrarPieza(pieza, tablero);
+        Pieza piezaAux = pieza.clone();
+
+        pieza.desplazarAbajo();
+
+        if(!reglas.superaTopeInferior(pieza.getCoords()) && reglas.permisoDesplazamientoInferior(pieza.getCoords(), tablero.getMatrizTablero())){
+            tablero.actualizarTablero(pieza.getCoords(), pieza.getColor());
+        }else{
+            tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
+        }
+
+        this.actualizarTablero(tablero.getMatrizTablero());
+
+
+        return tablero;
+    }
+
+    public boolean comprobarInferiores(Pieza pieza, Tablero tablero, Reglas reglas){
+        boolean permiso = true;
+        tablero = this.borrarPieza(pieza, tablero);
+        Pieza piezaAux = pieza.clone();
+
+        pieza.desplazarAbajo();
+
+        if(!reglas.superaTopeInferior(pieza.getCoords()) && reglas.permisoDesplazamientoInferior(pieza.getCoords(), tablero.getMatrizTablero())){
+            permiso = true;
+        }else{
+            permiso = false;
+        }
+
+        tablero.actualizarTablero(piezaAux.getCoords(), piezaAux.getColor());
+
+        return permiso;
+    }
+
+
+    //***** Funcion en la que se usa el wait y viene la entrada de botones*****
+
+
+    private Tablero seleccionarMovimiento(Pieza piezaActual, Tablero tablero, Reglas reglas){
+
+        if(!listaMovimientos.isEmpty()){
+            int movimiento = listaMovimientos.get(0);
+            switch (movimiento){
+                case 0:
+                    tablero = this.hacerDesplazamiento(piezaActual,tablero,reglas,0);
+                    break;
+                case 1:
+                    tablero = this.hacerDesplazamiento(piezaActual,tablero,reglas,1);
+                    break;
+                case 2:
+                    tablero = this.hacerRotaciones(piezaActual,tablero,reglas,0);
+                    break;
+                case 3:
+                    tablero = this.hacerRotaciones(piezaActual,tablero,reglas,1);
+                    break;
+            }
+            this.listaMovimientos.clear();
+        }
+
+        return tablero;
+    }
+
+
+    public void iniciarChingada(){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                executea();
+            }
+        };
+        new Thread(runnable).start();
+    }
+
+
+
+
+    public void iniciar(View vista){
+        iniciarChingada();
+    }
+
+    int cont = 0;
+    public void executea() {
+
+
+
+
+
+
+        for (int i = 0; i < this.nPiezasEnElArray; i++) {
+            Pieza pieza = new Pieza((int) (Math.random() * 7 + 1));
+            piezas.add(pieza);
+        }
+
+        Pieza piezaActual = piezas.get(0);
+        piezas.remove(0);
+        tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
+        Pieza pieza = new Pieza((int) (Math.random() * 7 + 1));
+        piezas.add(pieza);
+
+        do {
+
+            if (!comprobarInferiores(piezaActual, tablero, reglas)) {
+                piezaActual = piezas.get(0);
+                piezas.remove(0);
+                tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
+                Pieza aux = new Pieza((int) (Math.random() * 7 + 1));
+                piezas.add(aux);
+            }
+
+            //***** Funcion en la que se usa el wait y viene la entrada de botones*****
+
+            long ini = 0;
+            long fin = System.currentTimeMillis() + this.timer;
+
+            while (ini < fin) {
+                ini = System.currentTimeMillis();
+
+                tablero = this.seleccionarMovimiento(piezaActual, tablero, reglas);
+            }
+
+            //***** Funcion en la que se usa el wait y viene la entrada de botones*****
+
+            tablero = this.bajarPieza(piezaActual, tablero, reglas);
+
+
+            try {
+                Thread.sleep(16);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    this.actualizarTablero(tablero.getMatrizTablero());
+                }
+
+                private void actualizarTablero(int[][] matrizTablero) {
+                    int index = 0;
+
+                    for (int i = 4; i<=23; i++){
+                        for (int j=0;j<=9;j++){
+                            TextView auxiliar  = (TextView)ListaCeldas.get(index);
+                            cambiarColor(matrizTablero[i][j],auxiliar);
+                            index ++;
+                        }
+                    }
+                }
+            });
+
+
+        } while (this.comprobarInferiores(piezaActual, tablero, reglas) & !reglas.gameOver(piezaActual, tablero.getMatrizTablero()));
+
+
+
+    }
+
+
 
     public static void actualizarTablero(int[][] matriz){
         int index = 0;
@@ -482,6 +721,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
     public void cambiarSiguiente(int pieza){
         ImageView aux = (ImageView) findViewById(R.id.siguientePieza);
@@ -519,28 +760,36 @@ public class MainActivity extends AppCompatActivity {
     public static void cambiarColor(int color, TextView vista){
         switch(color) {
             case 0:
-                vista.setBackgroundColor(0Xffffff);
+                vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
                 break;
             case 1:
-                vista.setBackgroundColor(0X00ffff);
+                vista.setBackgroundColor(Color.parseColor("#00FFFF"));
+
                 break;
             case 2:
-                vista.setBackgroundColor(0Xcc00cc);
+                vista.setBackgroundColor(Color.parseColor("#cc00cc"));
+
                 break;
             case 3:
-                vista.setBackgroundColor(0X0000ff);
+                vista.setBackgroundColor(Color.parseColor("#0000FF"));
+
                 break;
             case 4:
-                vista.setBackgroundColor(0Xff6600);
+                vista.setBackgroundColor(Color.parseColor("#FF6600"));
+
                 break;
             case 5:
-                vista.setBackgroundColor(0Xffff00);
+                vista.setBackgroundColor(Color.parseColor("#FFFF00"));
+
                 break;
             case 6:
-                vista.setBackgroundColor(0X33cc33);
+                vista.setBackgroundColor(Color.parseColor("#33cc33"));
+
                 break;
             case 7:
-                vista.setBackgroundColor(0Xff0000);
+                vista.setBackgroundColor(Color.parseColor("#FF0000"));
+
                 break;
         }
     }

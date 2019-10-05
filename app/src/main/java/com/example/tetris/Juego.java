@@ -1,3 +1,4 @@
+
 package com.example.tetris;
 
 import java.util.AbstractSequentialList;
@@ -132,6 +133,8 @@ public class Juego{
             permiso = false;
         }
 
+        tablero.actualizarTablero(piezaAux.getCoords(), piezaAux.getColor());
+
         return permiso;
     }
 
@@ -167,25 +170,25 @@ public class Juego{
     //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
 
-    public void run(){
+    public void run() {
 
-        for(int i=0;i<this.nPiezasEnElArray;i++){
-            Pieza pieza = new Pieza((int)(Math.random()*7+1));
+        for (int i = 0; i < this.nPiezasEnElArray; i++) {
+            Pieza pieza = new Pieza((int) (Math.random() * 7 + 1));
             piezas.add(pieza);
         }
 
         Pieza piezaActual = piezas.get(0);
         piezas.remove(0);
         tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
-        Pieza pieza = new Pieza((int)(Math.random()*7+1));
+        Pieza pieza = new Pieza((int) (Math.random() * 7 + 1));
         piezas.add(pieza);
 
-        do{
-            if(!comprobarInferiores(pieza, tablero, reglas)){
+        do {
+            if (!comprobarInferiores(piezaActual, tablero, reglas)) {
                 piezaActual = piezas.get(0);
                 piezas.remove(0);
                 tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
-                Pieza aux = new Pieza((int)(Math.random()*7+1));
+                Pieza aux = new Pieza((int) (Math.random() * 7 + 1));
                 piezas.add(aux);
             }
 
@@ -194,7 +197,7 @@ public class Juego{
             long ini = 0;
             long fin = System.currentTimeMillis() + this.timer;
 
-            while(ini<fin){
+            while (ini < fin) {
                 ini = System.currentTimeMillis();
 
                 tablero = this.seleccionarMovimiento(piezaActual, tablero, reglas);
@@ -205,8 +208,44 @@ public class Juego{
             tablero = this.bajarPieza(piezaActual, tablero, reglas);
             MainActivity.actualizarTablero(tablero.getMatrizTablero());
 
-        }while(true);
+        } while (this.comprobarInferiores(piezaActual, tablero, reglas) & !reglas.gameOver(piezaActual, tablero.getMatrizTablero()));
+
     }
 
 
+    /*
+
+    public void run(){
+
+        for(int i=0;i<this.nPiezasEnElArray;i++){
+            Pieza pieza = new Pieza((int)(Math.random()*7+1));
+            piezas.add(pieza);
+        }
+
+        Pieza piezaActual = null;
+
+        do{
+
+            piezaActual = piezas.remove(0);
+            tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
+            Pieza pieza = new Pieza((int)(Math.random()*7+1));
+            piezas.add(pieza);
+
+            while(comprobarInferiores(piezaActual, this.tablero, this.reglas)){
+                long ini = 0;
+                long fin = System.currentTimeMillis() + this.timer;
+
+                while(ini<fin){
+                    ini = System.currentTimeMillis();
+
+                    tablero = this.seleccionarMovimiento(piezaActual, tablero, reglas);
+                }
+                this.tablero = this.bajarPieza(piezaActual, this.tablero, this.reglas);
+            }
+
+        }while(this.comprobarInferiores(piezaActual, tablero, reglas) & !reglas.gameOver(piezaActual, tablero.getMatrizTablero()));
+    }
+
+    */
 }
+
