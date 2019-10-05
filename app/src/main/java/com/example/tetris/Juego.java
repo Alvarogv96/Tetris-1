@@ -1,6 +1,7 @@
 package com.example.tetris;
 
 
+import android.os.Looper;
 import android.view.View;
 
 import java.util.LinkedList;
@@ -160,6 +161,7 @@ public class Juego extends Thread{
     public void run(){
         List<Pieza> piezas = new LinkedList<>();
         this.listaMovimientos = new LinkedList<>();
+        Looper.prepare();
 
         for(int i=0;i<this.nPiezasEnElArray;i++){
             Pieza pieza = new Pieza((int)Math.random()*7+1);

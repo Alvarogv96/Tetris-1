@@ -1,11 +1,11 @@
 package com.example.tetris;
 
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.tetris.R;
+
 import java.util.ArrayList;
 
 public class VistaTablero extends AppCompatActivity {
