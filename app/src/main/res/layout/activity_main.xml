@@ -7,6 +7,120 @@
 
     tools:context=".MainActivity">
 
+
+    <LinearLayout
+        android:layout_width="118dp"
+        android:layout_height="672dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_margin="10dp"
+
+            android:onClick="iniciar"
+            android:text="@string/start" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="@string/next" />
+
+        <ImageView
+            android:id="@+id/siguientePieza"
+            android:layout_width="70dp"
+            android:layout_height="75dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="0dp"
+            android:contentDescription="@string/app_name"
+            app:srcCompat="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Puntuacion: " />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="20dp"
+            android:textAlignment="center" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:onClick="rotaIzq"
+            app:srcCompat="@drawable/rotarizquierda"
+            android:contentDescription="@string/app_name" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:onClick="desplazaIzq"
+            app:srcCompat="@drawable/desplazarizquierda"
+            android:contentDescription="@string/app_name" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:onClick="desplazaDer"
+            app:srcCompat="@drawable/desplazarderecha"
+            android:contentDescription="@string/app_name" />
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:onClick="rotaDer"
+            app:srcCompat="@drawable/rotarderecha"
+            android:contentDescription="@string/app_name" />
+
+    </LinearLayout>
+
+
+
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="280dp"
@@ -85,6 +199,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j1"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -155,6 +275,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j2"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -220,6 +346,13 @@
 
             <TextView
                 android:id="@+id/i3"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/j3"
                 android:layout_column="8"
                 android:width="28dp"
                 android:height="28dp"
@@ -295,6 +428,13 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j4"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
+
 
         </TableRow>
 
@@ -360,6 +500,13 @@
 
             <TextView
                 android:id="@+id/i5"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/j5"
                 android:layout_column="8"
                 android:width="28dp"
                 android:height="28dp"
@@ -435,6 +582,13 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j6"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
+
 
         </TableRow>
 
@@ -505,6 +659,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j8"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -575,7 +735,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
-
+            <TextView
+                android:id="@+id/j9"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
         </TableRow>
 
         <TableRow
@@ -645,6 +810,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j10"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -715,6 +886,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j11"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -785,6 +962,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j12"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -855,6 +1038,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j13"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -925,6 +1114,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j14"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -995,6 +1190,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j15"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -1028,7 +1229,7 @@
                 android:layout_column="3"
                 android:width="28dp"
                 android:height="28dp"
-                android:background="#FFFFFF" />
+                android:background="@android:color/background_light" />
 
             <TextView
                 android:id="@+id/e16"
@@ -1065,6 +1266,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j16"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -1135,6 +1342,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j17"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -1205,6 +1418,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j18"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -1275,6 +1494,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j19"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -1345,6 +1570,12 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j20"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
@@ -1415,35 +1646,16 @@
                 android:height="28dp"
                 android:background="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/j21"
+                android:layout_column="8"
+                android:width="28dp"
+                android:height="28dp"
+                android:background="#FFFFFF" />
 
         </TableRow>
 
 
     </TableLayout>
-
-    <ImageView
-        android:id="@+id/siguientePieza"
-        android:layout_width="70dp"
-        android:layout_height="75dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tableLayout"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.175"
-        app:srcCompat="@color/colorAccent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="9dp"
-        android:text=" Next "
-        app:layout_constraintBottom_toTopOf="@+id/siguientePieza"
-        app:layout_constraintEnd_toStartOf="@+id/tableLayout"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

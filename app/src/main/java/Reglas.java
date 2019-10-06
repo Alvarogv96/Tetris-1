@@ -1,6 +1,7 @@
+package com.example.tetris;
+
 public class Reglas {
 
-    //Las coordenadas para realizar las comprobaciones hay que pasarlas desplazadas, es decir con las coordenadas destino deseadas.
     public boolean permisoDesplazamiento(int [][] matrizCoords, int [][] matrizTablero){
         boolean permiso = true;
 
@@ -48,7 +49,7 @@ public class Reglas {
         for (int i = 23; i >= 0; i--){
             if(!resultado){
                 boolean incompleta = false;
-                for(int j = 0; j < matrizTablero.length; j++){
+                for(int j = 0; j < 10; j++){
                     if(matrizTablero[i][j] == 0){
                         incompleta = true;
                     }
@@ -62,15 +63,16 @@ public class Reglas {
         return resultado;
     }
     
-    public boolean gameOver(int [][] matrizTablero){
+    public boolean gameOver(Pieza pieza, int [][] matrizTablero){
+
         boolean fin = false;
-        
-        for(int i = 0; i < 10; i++){
-            if(matrizTablero[3][i] !=0){
-                fin = true;
+
+            for(int i=0; i<pieza.getCoords().length;i++){
+                if(pieza.getCoords()[i][0] == 3){
+                    fin = true;
+                }
             }
-        }
-        
+
         return fin;
     }
 
