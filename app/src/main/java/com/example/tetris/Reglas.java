@@ -1,12 +1,7 @@
 package com.example.tetris;
 
-import android.view.View;
-
-import com.example.tetris.Juego;
-
 public class Reglas {
 
-    //Las coordenadas para realizar las comprobaciones hay que pasarlas desplazadas, es decir con las coordenadas destino deseadas.
     public boolean permisoDesplazamiento(int [][] matrizCoords, int [][] matrizTablero){
         boolean permiso = true;
 

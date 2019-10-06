@@ -2,27 +2,21 @@ package com.example.tetris;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.content.pm.ActivityInfo;
 import android.os.Handler;
-import android.text.style.UpdateLayout;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import android.widget.TextView;
 
-
-
 public class MainActivity extends AppCompatActivity {
 
-    //private Juego proceso;
     private static ArrayList<TextView> ListaCeldas;
     private TextView ayuda;
 
@@ -37,10 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // La actividad se crea.
 
         this.piezas = new LinkedList<>();
         this.listaMovimientos = new LinkedList<>();
@@ -468,14 +461,7 @@ public class MainActivity extends AppCompatActivity {
         ListaCeldas.add(ayuda);
         ayuda = (TextView) findViewById(R.id.j21);
         ListaCeldas.add(ayuda);
-
     }
-
-
-
-
-    // 0 -> desplazamiento izquierda; 1 -> desplazamiento derecha; 2 -> rotacion izquierda; 3 ->rotacion derecha
-
 
 
     public void desplazaIzq(View vista){
@@ -572,6 +558,7 @@ public class MainActivity extends AppCompatActivity {
         return tablero;
     }
 
+
     public boolean comprobarInferiores(Pieza pieza, Tablero tablero, Reglas reglas){
         boolean permiso = true;
 
@@ -591,9 +578,6 @@ public class MainActivity extends AppCompatActivity {
 
         return permiso;
     }
-
-
-    //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
 
     private Tablero seleccionarMovimiento(Pieza piezaActual, Tablero tablero, Reglas reglas){
@@ -652,6 +636,7 @@ public class MainActivity extends AppCompatActivity {
         Pieza pieza = new Pieza((int) (Math.random() * 7 + 1));
         piezas.add(pieza);
 
+
         do {
 
             if (!comprobarInferiores(piezaActual, tablero, reglas)) {
@@ -663,9 +648,9 @@ public class MainActivity extends AppCompatActivity {
                 tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
                 Pieza aux = new Pieza((int) (Math.random() * 7 + 1));
                 piezas.add(aux);
+
             }
 
-            //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
             long ini = 0;
             long fin = System.currentTimeMillis() + this.timer;
@@ -676,7 +661,6 @@ public class MainActivity extends AppCompatActivity {
                 tablero = this.seleccionarMovimiento(piezaActual, tablero, reglas);
             }
 
-            //***** Funcion en la que se usa el wait y viene la entrada de botones*****
 
             tablero = this.bajarPieza(piezaActual, tablero, reglas);
 
@@ -707,8 +691,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         } while (this.comprobarInferiores(piezaActual, tablero, reglas) | !reglas.gameOver(piezaActual, tablero.getMatrizTablero()));
-
-
 
     }
 
@@ -759,6 +741,7 @@ public class MainActivity extends AppCompatActivity {
         aux.setImageDrawable(res);
     }
 
+
     public static void cambiarColor(int color, TextView vista){
         switch(color) {
             case 0:
@@ -795,6 +778,5 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
-
+    
 }
