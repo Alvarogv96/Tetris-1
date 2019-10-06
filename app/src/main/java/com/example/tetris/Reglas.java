@@ -54,7 +54,7 @@ public class Reglas {
         for (int i = 23; i >= 0; i--){
             if(!resultado){
                 boolean incompleta = false;
-                for(int j = 0; j < matrizTablero.length; j++){
+                for(int j = 0; j < 10; j++){
                     if(matrizTablero[i][j] == 0){
                         incompleta = true;
                     }

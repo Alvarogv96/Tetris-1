@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<TextView> ListaCeldas;
     private TextView ayuda;
 
-    private final long timer = 700;
+    private final long timer = 500;
     private final int nPiezasEnElArray = 2;
     List<Integer> listaMovimientos;
     List<Pieza> piezas;
@@ -504,47 +504,51 @@ public class MainActivity extends AppCompatActivity {
 
 
     public Tablero hacerDesplazamiento(Pieza pieza, Tablero tablero, Reglas regla, int opcion){
-        tablero = this.borrarPieza(pieza,tablero);
+        tablero.actualizarTablero(pieza.getCoords(), 0);
         Pieza piezaAux = pieza.clone();
 
         if(opcion == 0){                     //desplazamiento izquierda
-            pieza.desplazarIzq();
+            piezaAux.desplazarIzq();
         }else if(opcion == 1){              //desplazamiento derecha
-            pieza.desplazarDer();
+            piezaAux.desplazarDer();
         }
 
-        if(regla.permisoDesplazamiento(pieza.getCoords(), tablero.getMatrizTablero())){
-            tablero.actualizarTablero(pieza.getCoords(),pieza.getColor());
+        if(regla.permisoDesplazamiento(piezaAux.getCoords(), tablero.getMatrizTablero())){
+            tablero.actualizarTablero(piezaAux.getCoords(),piezaAux.getColor());
+            if(opcion == 0){                     //desplazamiento izquierda
+                pieza.desplazarIzq();
+            }else if(opcion == 1){              //desplazamiento derecha
+                pieza.desplazarDer();
+            }
         }else{
-            tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
+            tablero.actualizarTablero(pieza.getCoords(), pieza.getColor());
         }
-
-        this.actualizarTablero(tablero.getMatrizTablero());
-
-
 
         return tablero;
     }
 
+
     public Tablero hacerRotaciones(Pieza pieza, Tablero tablero, Reglas regla, int opcion){
-        tablero = this.borrarPieza(pieza, tablero);
         Pieza piezaAux = pieza.clone();
+        tablero.actualizarTablero(piezaAux.getCoords(), 0);
 
-        if(opcion  == 2){        //rotacion izquierda
-            pieza.rotarIzq();
-
-        }else if (opcion == 3){                  //rotacion derecha
-            pieza.rotarDer();
-        }
-
-        if(!regla.superaTopeInferior(pieza.getCoords()) && regla.permisoDesplazamiento(pieza.getCoords(), tablero.getMatrizTablero())){
-            tablero.actualizarTablero(pieza.getCoords(), pieza.getColor());
+        if(opcion == 0){
+            piezaAux.rotarIzq();
         }else{
-            tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
+            piezaAux.rotarDer();
         }
 
-        this.actualizarTablero(tablero.getMatrizTablero());
+        if(!regla.superaTopeInferior(piezaAux.getCoords()) && regla.permisoDesplazamiento(piezaAux.getCoords(), tablero.getMatrizTablero())){
+            tablero.actualizarTablero(piezaAux.getCoords(), piezaAux.getColor());
 
+            if(opcion == 0){
+                pieza.rotarIzq();
+            }else{
+                pieza.rotarDer();
+            }
+        }else{
+            tablero.actualizarTablero(pieza.getCoords(), pieza.getColor());
+        }
 
         return tablero;
     }
@@ -571,7 +575,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean comprobarInferiores(Pieza pieza, Tablero tablero, Reglas reglas){
         boolean permiso = true;
 
-
         Pieza piezaAux = pieza.clone();
 
         tablero.actualizarTablero(piezaAux.getCoords(), 0);
@@ -585,7 +588,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         tablero.actualizarTablero(pieza.getCoords(), pieza.getColor());
-
 
         return permiso;
     }
@@ -630,8 +632,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     public void iniciar(View vista){
         iniciarChingada();
     }
@@ -639,10 +639,7 @@ public class MainActivity extends AppCompatActivity {
     int cont = 0;
     public void executea() {
 
-
-
-
-
+        int puntuacion = 0;
 
         for (int i = 0; i < this.nPiezasEnElArray; i++) {
             Pieza pieza = new Pieza((int) (Math.random() * 7 + 1));
@@ -658,6 +655,9 @@ public class MainActivity extends AppCompatActivity {
         do {
 
             if (!comprobarInferiores(piezaActual, tablero, reglas)) {
+                while(reglas.filaCompleta(this.tablero.getMatrizTablero(), tablero)){
+                    puntuacion += 30;
+                }
                 piezaActual = piezas.get(0);
                 piezas.remove(0);
                 tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
@@ -713,7 +713,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     public static void actualizarTablero(int[][] matriz){
         int index = 0;
 
@@ -725,7 +724,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 
 
     public void cambiarSiguiente(int pieza){
