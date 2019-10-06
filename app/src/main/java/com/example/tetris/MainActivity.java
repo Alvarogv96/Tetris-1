@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<TextView> ListaCeldas;
     private TextView ayuda;
 
-    private final long timer = 500;
+    private final long timer = 250;
     private final int nPiezasEnElArray = 2;
     List<Integer> listaMovimientos;
     List<Pieza> piezas;
