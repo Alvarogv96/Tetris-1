@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -617,6 +618,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void iniciar(View vista){
+        Button botonStart = findViewById(R.id.button1);
+        botonStart.setEnabled(false);
+
         iniciarChingada();
     }
 
@@ -624,6 +628,8 @@ public class MainActivity extends AppCompatActivity {
     public void executea() {
 
         int puntuacion = 0;
+
+        TextView muestraPuntos = (TextView) findViewById(R.id.textView3);
 
         for (int i = 0; i < this.nPiezasEnElArray; i++) {
             Pieza pieza = new Pieza((int) (Math.random() * 7 + 1));
@@ -636,12 +642,12 @@ public class MainActivity extends AppCompatActivity {
         Pieza pieza = new Pieza((int) (Math.random() * 7 + 1));
         piezas.add(pieza);
 
-
         do {
 
             if (!comprobarInferiores(piezaActual, tablero, reglas)) {
                 while(reglas.filaCompleta(this.tablero.getMatrizTablero(), tablero)){
                     puntuacion += 30;
+                    muestraPuntos.setText(puntuacion+"");
                 }
                 piezaActual = piezas.get(0);
                 piezas.remove(0);
@@ -673,8 +679,41 @@ public class MainActivity extends AppCompatActivity {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
+
                     this.actualizarTablero(tablero.getMatrizTablero());
+                    this.cambiarSiguiente(piezas.get(0).getColor());
                 }
+
+
+                private void cambiarSiguiente(int pieza){
+
+                    ImageView aux = (ImageView) findViewById(R.id.siguientePieza);
+                    switch(pieza){
+                        case 1:
+                            aux.setImageResource(R.drawable.piezai);
+                            break;
+                        case 2:
+                            aux.setImageResource(R.drawable.piezat);
+                            break;
+                        case 3:
+                            aux.setImageResource(R.drawable.piezaj);
+                            break;
+                        case 4:
+                            aux.setImageResource(R.drawable.piezal);
+                            break;
+                        case 5:
+                            aux.setImageResource(R.drawable.piezao);
+                            break;
+                        case 6:
+                            aux.setImageResource(R.drawable.piezas);
+                            break;
+                        case 7:
+                            aux.setImageResource(R.drawable.piezaz);
+                            break;
+                    }
+
+                }
+
 
                 private void actualizarTablero(int[][] matrizTablero) {
                     int index = 0;
@@ -705,40 +744,6 @@ public class MainActivity extends AppCompatActivity {
                 index ++;
             }
         }
-    }
-
-
-    public void cambiarSiguiente(int pieza){
-        ImageView aux = (ImageView) findViewById(R.id.siguientePieza);
-        String source = "@drawable/imgs/";
-
-        switch(pieza){
-            case 1:
-                source = source + "I";
-                break;
-            case 2:
-                source = source + "T";
-                break;
-            case 3:
-                source = source + "J";
-                break;
-            case 4:
-                source = source + "L";
-                break;
-            case 5:
-                source = source + "O";
-                break;
-            case 6:
-                source = source + "S";
-                break;
-            case 7:
-                source = source + "Z";
-                break;
-        }
-        int imageResource = getResources().getIdentifier(source, null, getPackageName());
-
-        Drawable res = getResources().getDrawable(imageResource);
-        aux.setImageDrawable(res);
     }
 
 
@@ -778,5 +783,5 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-    
+
 }
