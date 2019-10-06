@@ -1,3 +1,5 @@
+package com.example.tetris;
+
 public class Pieza implements Cloneable{
     private int[][] matrizCoords;
     private int color;
@@ -12,6 +14,7 @@ public class Pieza implements Cloneable{
         switch (tipo){
             case 0:
                 this.crearPieza0();
+                break;
             case 1:
                 this.crearPieza1(1);
                 break;
@@ -36,12 +39,6 @@ public class Pieza implements Cloneable{
             default:
         }
     }
-
-    //IMPORTANTE. La creacion de las fichas esta hecha a proposito para que el bit importante se encuentre al principio de la matriz,
-    // por lo que en la m(0,0) encontraremo la x del bit importante y en la m(0,1) encontraremos la y de este. El bit importante es el
-    // bit que cuando se rota una figura este queda fijo en su posicion (podriamos decir que hace de eje)
-
-    //primera coordenada fila, segunda columnas
 
     private void crearPieza0(){
         this.color=0;
@@ -111,7 +108,6 @@ public class Pieza implements Cloneable{
 
         return matrizAux1;
     }
-
 
     private int[][] convertirAPieza(boolean[][] matrizAux2){
         int[][] matrizCoordsAux = new int[4][2];
