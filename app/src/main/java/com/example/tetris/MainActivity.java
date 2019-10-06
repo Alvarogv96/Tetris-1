@@ -494,17 +494,17 @@ public class MainActivity extends AppCompatActivity {
         tablero.actualizarTablero(pieza.getCoords(), 0);
         Pieza piezaAux = pieza.clone();
 
-        if(opcion == 0){                     //desplazamiento izquierda
+        if(opcion == 0){
             piezaAux.desplazarIzq();
-        }else if(opcion == 1){              //desplazamiento derecha
+        }else if(opcion == 1){
             piezaAux.desplazarDer();
         }
 
         if(regla.permisoDesplazamiento(piezaAux.getCoords(), tablero.getMatrizTablero())){
             tablero.actualizarTablero(piezaAux.getCoords(),piezaAux.getColor());
-            if(opcion == 0){                     //desplazamiento izquierda
+            if(opcion == 0){                     
                 pieza.desplazarIzq();
-            }else if(opcion == 1){              //desplazamiento derecha
+            }else if(opcion == 1){
                 pieza.desplazarDer();
             }
         }else{
