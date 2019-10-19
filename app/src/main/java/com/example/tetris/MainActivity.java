@@ -21,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<TextView> ListaCeldas;
     private TextView ayuda;
 
-    private final long timer = 250;
+    private final long timerNormal = 500;
+    private final long timerRapido = 500;
     private final int nPiezasEnElArray = 2;
     List<Integer> listaMovimientos;
     List<Pieza> piezas;
@@ -605,6 +606,17 @@ public class MainActivity extends AppCompatActivity {
         return tablero;
     }
 
+    public boolean permisoGeneracion(int [][] tablero){
+        boolean permiso = true;
+        for(int i = 0; i < 7; i++){
+            for(int j = 0; j < 10; j++){
+                if (tablero[i][j] != 0){
+                    permiso = false;
+                }
+            }
+        }
+        return permiso;
+    }
 
     public void iniciarChingada(){
         Runnable runnable = new Runnable() {
@@ -626,8 +638,10 @@ public class MainActivity extends AppCompatActivity {
 
     int cont = 0;
     public void executea() {
-
+        int contTiempo = 0;
         int puntuacion = 0;
+        boolean hayPiezaDopada = false;
+        Pieza piezaDopada = new Pieza(0);
 
         TextView muestraPuntos = (TextView) findViewById(R.id.textView3);
 
@@ -644,31 +658,71 @@ public class MainActivity extends AppCompatActivity {
 
         do {
 
-            if (!comprobarInferiores(piezaActual, tablero, reglas)) {
+            if ((!comprobarInferiores(piezaActual, tablero, reglas)) | (!comprobarInferiores(piezaDopada, tablero, reglas))) {
                 while(reglas.filaCompleta(this.tablero.getMatrizTablero(), tablero)){
                     puntuacion += 30;
                     muestraPuntos.setText(puntuacion+"");
                 }
-                piezaActual = piezas.get(0);
-                piezas.remove(0);
-                tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
-                Pieza aux = new Pieza((int) (Math.random() * 7 + 1));
-                piezas.add(aux);
+                if(!comprobarInferiores(piezaActual, tablero, reglas)){
+                    piezaActual = piezas.get(0);
+                    piezas.remove(0);
+                    tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
+                    Pieza aux = new Pieza((int) (Math.random() * 7 + 1));
+                    piezas.add(aux);
+                }
+                if(!comprobarInferiores(piezaDopada, tablero, reglas)){
+                    piezaDopada = new Pieza(0);
+                    hayPiezaDopada = false;
+                    //contTiempo = 0;
+                }
 
             }
 
-
-            long ini = 0;
-            long fin = System.currentTimeMillis() + this.timer;
-
-            while (ini < fin) {
-                ini = System.currentTimeMillis();
-
-                tablero = this.seleccionarMovimiento(piezaActual, tablero, reglas);
+            //Comprobar si han pasado 30 segundos, si no hay ya una pieza rápida y si tiene espacio para generarse.
+            if(contTiempo >= 30000 & !hayPiezaDopada & permisoGeneracion(tablero.getMatrizTablero())){
+                piezaDopada = piezas.get(0);
+                if(comprobarInferiores(piezaDopada, tablero, reglas)){
+                    piezas.remove(0);
+                    hayPiezaDopada = true;
+                    contTiempo = 0;
+                    tablero.actualizarTablero(piezaDopada.getCoords(), piezaDopada.getColor());
+                    Pieza aux = new Pieza((int) (Math.random() * 7 + 1));
+                    piezas.add(aux);
+                }
             }
 
+            long ini1 = 0;
+            long fin1 = System.currentTimeMillis() + this.timerNormal;
 
-            tablero = this.bajarPieza(piezaActual, tablero, reglas);
+            long ini2 = 0;
+            long fin2 = System.currentTimeMillis() + this.timerRapido;
+
+            while (ini1 < fin1) {
+                ini1 = System.currentTimeMillis();
+
+                //SI hay una pieza rápida,solo se controlará esta.
+                if(hayPiezaDopada){
+                    while(ini2 < fin2){
+                        ini2 = System.currentTimeMillis();
+                        tablero = this.seleccionarMovimiento(piezaDopada, tablero, reglas);
+                    }
+                    if(comprobarInferiores(piezaDopada, tablero, reglas)){
+                        tablero = this.bajarPieza(piezaDopada, tablero, reglas);
+                    }
+
+                }
+
+                if(!hayPiezaDopada){
+                    tablero = this.seleccionarMovimiento(piezaActual, tablero, reglas);
+                }
+
+            }
+
+            if(comprobarInferiores(piezaActual, tablero, reglas)){
+                tablero = this.bajarPieza(piezaActual, tablero, reglas);
+            }
+
+            contTiempo += 500;
 
 
             try {
@@ -729,7 +783,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
 
-        } while (this.comprobarInferiores(piezaActual, tablero, reglas) | !reglas.gameOver(piezaActual, tablero.getMatrizTablero()));
+        } while ((this.comprobarInferiores(piezaActual, tablero, reglas) & this.comprobarInferiores(piezaDopada, tablero, reglas)) | (!reglas.gameOver(piezaActual, tablero.getMatrizTablero()) & !reglas.gameOver(piezaDopada,tablero.getMatrizTablero())));
 
     }
 
