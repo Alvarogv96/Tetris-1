@@ -9,4 +9,16 @@
     <string name="rotader">rotaDer</string>
     <string name="rotaizq">rotaIzq</string>
     <string name="baja">baja</string>
+    <string name="Ranking">Ranking</string>
+    <string name="Modo">Clasico</string>
+    <string name="Configuracion">Configuracion</string>
+    <string name="volver">MENU</string>
+    <string name="Salir">Salir</string>
+    <string name="gameOver">GAME OVER</string>
+    <string name="nombre">Insertar nombre</string>
+    <string name="añadir">Añadir</string>
+    <string name="verRanking">VER RANKING</string>
+    <string name="tryAgain">JUGAR DE NUEVO</string>
+    <string name="anterior">ANT</string>
+    <string name="siguiente">SIG</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.tetris;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ public class ActivityJuego extends Activity {
     private TextView ayuda;
 
     private final long timer = 1000;
+
+    private int modoDeJuego;
 
     private long ini;
     private long fin;
@@ -41,6 +44,8 @@ public class ActivityJuego extends Activity {
         this.listaMovimientos = new LinkedList<>();
         this.tablero = new Tablero();
         this.reglas = new Reglas();
+
+        this.modoDeJuego = getIntent().getIntExtra("modoDeJuego",0);
 
         ListaCeldas = new ArrayList<TextView>(200);
         ayuda = (TextView) findViewById(R.id.a1);
@@ -738,6 +743,11 @@ public class ActivityJuego extends Activity {
 
 
         } while (this.comprobarInferiores(piezaActual, tablero, reglas) | !reglas.gameOver(piezaActual, tablero.getMatrizTablero()));
+
+
+        finish();
+        Intent intent = new Intent(this, ActivityGameOver.class);
+        startActivity(intent);
 
     }
 
