@@ -608,7 +608,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean permisoGeneracion(int [][] tablero){
         boolean permiso = true;
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < 5; i++){
             for(int j = 0; j < 10; j++){
                 if (tablero[i][j] != 0){
                     permiso = false;
@@ -640,7 +640,9 @@ public class MainActivity extends AppCompatActivity {
     public void executea() {
         int contTiempo = 0;
         int puntuacion = 0;
+        boolean hayPiezaNormal = false;
         boolean hayPiezaDopada = false;
+        boolean enEspera = false;
         Pieza piezaDopada = new Pieza(0);
 
         TextView muestraPuntos = (TextView) findViewById(R.id.textView3);
@@ -655,28 +657,37 @@ public class MainActivity extends AppCompatActivity {
         tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
         Pieza pieza = new Pieza((int) (Math.random() * 7 + 1));
         piezas.add(pieza);
+        hayPiezaNormal = true;
 
         do {
 
-            if ((!comprobarInferiores(piezaActual, tablero, reglas)) | (!comprobarInferiores(piezaDopada, tablero, reglas))) {
-                while(reglas.filaCompleta(this.tablero.getMatrizTablero(), tablero)){
-                    puntuacion += 30;
-                    muestraPuntos.setText(puntuacion+"");
-                }
-                if(!comprobarInferiores(piezaActual, tablero, reglas)){
+            if (!comprobarInferiores(piezaActual, tablero, reglas)) {
+                hayPiezaNormal = false;
+                if(!hayPiezaDopada){
+                    while(reglas.filaCompleta(this.tablero.getMatrizTablero(), tablero)){
+                        puntuacion += 30;
+                        muestraPuntos.setText(puntuacion+"");
+                    }
+
                     piezaActual = piezas.get(0);
                     piezas.remove(0);
                     tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
                     Pieza aux = new Pieza((int) (Math.random() * 7 + 1));
                     piezas.add(aux);
-                }
-                if(!comprobarInferiores(piezaDopada, tablero, reglas)){
-                    piezaDopada = new Pieza(0);
-                    hayPiezaDopada = false;
-                    //contTiempo = 0;
+                    hayPiezaNormal = true;
                 }
 
             }
+
+            if(!comprobarInferiores(piezaDopada, tablero, reglas)){
+                hayPiezaDopada = false;
+                contTiempo = 0;
+                piezaDopada = new Pieza(0);
+            }
+
+
+
+
 
             //Comprobar si han pasado 30 segundos, si no hay ya una pieza rápida y si tiene espacio para generarse.
             if(contTiempo >= 30000 & !hayPiezaDopada & permisoGeneracion(tablero.getMatrizTablero())){
@@ -684,7 +695,7 @@ public class MainActivity extends AppCompatActivity {
                 if(comprobarInferiores(piezaDopada, tablero, reglas)){
                     piezas.remove(0);
                     hayPiezaDopada = true;
-                    contTiempo = 0;
+                    //contTiempo = 0;
                     tablero.actualizarTablero(piezaDopada.getCoords(), piezaDopada.getColor());
                     Pieza aux = new Pieza((int) (Math.random() * 7 + 1));
                     piezas.add(aux);
@@ -723,6 +734,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             contTiempo += 500;
+
+
+
+
 
 
             try {
