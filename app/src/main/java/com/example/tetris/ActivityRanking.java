@@ -10,11 +10,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,6 +24,8 @@ public class ActivityRanking extends Activity{
     private final int apartadosRanking = 10;
     private TextView textViewRanking;
 
+    private boolean datoNuevo;
+
     @SuppressLint("ResourceType")
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -34,12 +34,13 @@ public class ActivityRanking extends Activity{
 
         this.textViewRanking = findViewById(R.id.textViewRanking);
 
+        this.datoNuevo = getIntent().getBooleanExtra("datoNuevo",Boolean.FALSE);
+
         try {
             ranking();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
 
         }
-
     }
 
 
@@ -50,21 +51,6 @@ public class ActivityRanking extends Activity{
     }
 
 
-    private boolean existeFichero(){
-        File fichero = new File(this.rutaFichero);
-        return fichero.exists();
-    }
-
-
-    private void crearFichero(){
-        try{
-            openFileOutput(this.rutaFichero, Context.MODE_PRIVATE);
-        }catch (IOException e){
-
-        }
-
-    }
-
     public List<DatosRanking> pasarListaDato(List<String> listaRanking){
 
         String nombre;
@@ -74,14 +60,13 @@ public class ActivityRanking extends Activity{
 
         for(String aux:listaRanking){
 
-            nombre = aux.substring(aux.lastIndexOf("/"));
-            aux = aux.substring(aux.lastIndexOf("/",aux.length()));
-            modo = aux.substring(aux.lastIndexOf("/"));
-            aux = aux.substring(aux.lastIndexOf("/",aux.length()));
-            puntuacion = aux.substring(aux.lastIndexOf("/"));
-            aux = aux.substring(aux.lastIndexOf("/",aux.length()));
+            nombre = aux.substring(0,aux.indexOf("/"));
+            aux = aux.substring(aux.indexOf("/")+1);
+            modo = aux.substring(0,aux.indexOf("/"));
+            aux = aux.substring(aux.indexOf("/")+1);
+            puntuacion = aux.substring(0);
 
-            DatosRanking datos = new DatosRanking(nombre,Integer.getInteger(modo),Integer.getInteger(puntuacion));
+            DatosRanking datos = new DatosRanking(nombre,modo,Integer.parseInt(puntuacion));
             datosRankings.add(datos);
         }
 
@@ -90,15 +75,17 @@ public class ActivityRanking extends Activity{
     }
 
 
-    private List<DatosRanking> añadirPartida() throws IOException{
-        DatosRanking datos = new DatosRanking(getIntent().getStringExtra("nombre"),getIntent().getIntExtra("modo",0),getIntent().getIntExtra("puntuacion",0));
+    private List<DatosRanking> añadirPartida(){
 
         String aux;
         List<String> listaRanking = new ArrayList<>();
 
-
         try{
-            BufferedReader buffer = (new BufferedReader( new InputStreamReader(openFileInput(this.rutaFichero))));
+            BufferedReader buffer =
+                    new BufferedReader(
+                            new InputStreamReader(
+                                    openFileInput(this.rutaFichero)));
+
 
             while((aux = buffer.readLine()) != null){
                 listaRanking.add(aux);
@@ -106,20 +93,28 @@ public class ActivityRanking extends Activity{
 
             buffer.close();
 
-
-
-        }catch(IOException e){
+        }catch(Exception e){
 
         }
 
-         List<DatosRanking> datosRankings = pasarListaDato(listaRanking);
 
-        datosRankings.add(datos);
+        List<DatosRanking> datosRankings = pasarListaDato(listaRanking);
+
+        if(this.datoNuevo){
+            String nombre = getIntent().getStringExtra("nombre");
+            String modo = getIntent().getStringExtra("modo");
+            int puntuacion = getIntent().getIntExtra("puntuacion",0);
+
+
+            DatosRanking datos = new DatosRanking(nombre,modo,puntuacion);
+            datosRankings.add(datos);
+        }
+
 
         Collections.sort(datosRankings, new Comparator<DatosRanking>() {
             @Override
             public int compare(DatosRanking o1, DatosRanking o2) {
-                return Integer.compare(o1.puntuacion,o2.puntuacion);
+                return Integer.compare(o2.puntuacion,o1.puntuacion);
             }
         });
 
@@ -135,25 +130,35 @@ public class ActivityRanking extends Activity{
     public String meteEspacios(String aux, int espacios){
         if(aux.length()<espacios){
             for(int i=aux.length();i<espacios;i++){
-                aux.concat(" ");
+                aux = aux + " ";
             }
         }
         else if(aux.length()>espacios){
-            aux.substring(0,espacios-1);
+            aux = aux.substring(0,espacios-1);
         }
+
+        aux = aux + " ";
 
         return aux;
     }
 
     public void mostrarEnActividad(List<DatosRanking> datosRanking){
         String linea ="";
+
+        linea = linea + meteEspacios("Nombre",14);
+        linea = linea + meteEspacios("Modo",9);
+        linea = linea + "Puntuacion";
+        linea = linea + "\n";
+
         for(DatosRanking aux:datosRanking){
-            linea = meteEspacios(aux.getNombre(),20);
-            linea.concat(meteEspacios(aux.modo,10));
-            linea.concat(meteEspacios(String.valueOf(aux.puntuacion),10));
-            linea.concat("\n");
+            linea = linea + meteEspacios(aux.getNombre(),14);
+            linea = (linea + meteEspacios(aux.modo,9));
+            linea = linea + aux.puntuacion;
+            linea = linea + "\n";
+
 
         }
+
         this.textViewRanking.setText(linea);
     }
 
@@ -161,40 +166,41 @@ public class ActivityRanking extends Activity{
     public void guardarFichero(List<DatosRanking> datosRankings){
 
         String linea = "";
-        FileOutputStream outputStream;
+
         try{
-            outputStream = openFileOutput(this.rutaFichero, Context.MODE_PRIVATE);
+
+            OutputStreamWriter writer =
+                    new OutputStreamWriter(
+                            openFileOutput(this.rutaFichero,Context.MODE_PRIVATE));
 
             for(DatosRanking aux:datosRankings){
-                linea.concat(aux.nombre + "/");
-                linea.concat(aux.modo + "/");
-                linea.concat(aux.puntuacion + "\n");
+                linea = (aux.nombre + "/" + aux.modo + "/" + aux.puntuacion + "\n");
 
-                outputStream.write(linea.getBytes());
+                writer.write(linea);
+
                 linea = "";
             }
-            outputStream.close();
 
-        }catch(IOException e){
+            writer.flush();
+            writer.close();
+
+        }catch(Exception e){
 
         }
 
     }
 
 
-    private void ranking() throws FileNotFoundException {
-        if(!existeFichero()){
-            crearFichero();
-        }
+    private void ranking() throws IOException {
+
 
         List<DatosRanking> datosRankings = null;
-        try {
-            datosRankings = añadirPartida();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        datosRankings = añadirPartida();
         mostrarEnActividad(datosRankings);
         guardarFichero(datosRankings);
+
+
+
     }
 
 
@@ -203,24 +209,11 @@ public class ActivityRanking extends Activity{
         private String modo;
         private  int puntuacion;
 
-        public DatosRanking(String nombre, int modo, int puntuacion){
+        public DatosRanking(String nombre, String modo, int puntuacion){
             this.nombre = nombre;
             this.puntuacion = puntuacion;
+            this.modo = modo;
 
-            switch (modo){
-                case 0:
-                    this.modo = "Clasico";
-                    break;
-                case 1:
-                    this.modo = "Modo1";
-                    break;
-                case 2:
-                    this.modo = "Modo2";
-                    break;
-                default:
-                    this.modo = "Error";
-                    break;
-            }
 
 
         }

@@ -21,7 +21,7 @@ public class ActivityJuego extends Activity {
 
     private final long timer = 1000;
 
-    private int modoDeJuego;
+    private String modoDeJuego;
     private int puntuacion;
 
     private long ini;
@@ -46,7 +46,7 @@ public class ActivityJuego extends Activity {
         this.tablero = new Tablero();
         this.reglas = new Reglas();
 
-        this.modoDeJuego = getIntent().getIntExtra("modoDeJuego",0);
+        this.modoDeJuego = getIntent().getStringExtra("modo");
 
         ListaCeldas = new ArrayList<TextView>(200);
         ayuda = (TextView) findViewById(R.id.a1);

@@ -72,8 +72,9 @@ public class ActivityGameOver extends Activity {
 
         Intent intent = new Intent(this, ActivityRanking.class);
         intent.putExtra("puntuacion",getIntent().getIntExtra("puntuacion",0));
-        intent.putExtra("nombre",this.editText.getText());
-        intent.putExtra("modo",getIntent().getIntExtra("modo",0));
+        intent.putExtra("datoNuevo",Boolean.TRUE);
+        intent.putExtra("nombre",this.editText.getText().toString());
+        intent.putExtra("modo",getIntent().getStringExtra("modo"));
 
         startActivity(intent);
     }

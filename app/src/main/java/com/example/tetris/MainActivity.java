@@ -42,15 +42,10 @@ public class MainActivity extends AppCompatActivity {
     public void ejecutarJuego(View view){
         finish();
         Intent intent = new Intent(this, ActivityJuego.class);
-        intent.putExtra("modoDeJuego",this.numeroModo);
+        intent.putExtra("modo",this.modosDeJuego.get(this.numeroModo));
         startActivity(intent);
     }
 
-    public void ejecutarRanking(View view){
-        finish();
-        Intent intent = new Intent(this, ActivityGameOver.class);
-        startActivity(intent);
-    }
 
     public void ejecutarSalir(View view){
         this.finish();
@@ -68,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
             this.numeroModo++;
             this.modos.setText(this.modosDeJuego.get(this.numeroModo));
         }
+    }
+
+
+    public void ejecutarRanking(View view){
+        finish();
+        Intent intent = new Intent(this, ActivityRanking.class);
+        intent.putExtra("datoNuevo",Boolean.FALSE);
+        startActivity(intent);
     }
 
 }
