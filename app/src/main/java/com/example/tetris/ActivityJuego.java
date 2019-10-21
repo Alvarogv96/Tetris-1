@@ -22,6 +22,7 @@ public class ActivityJuego extends Activity {
     private final long timer = 1000;
 
     private int modoDeJuego;
+    private int puntuacion;
 
     private long ini;
     private long fin;
@@ -640,7 +641,7 @@ public class ActivityJuego extends Activity {
     int cont = 0;
     public void executea() {
 
-        int puntuacion = 0;
+        this.puntuacion = 0;
 
         TextView muestraPuntos = (TextView) findViewById(R.id.textView3);
 
@@ -659,8 +660,8 @@ public class ActivityJuego extends Activity {
 
             if (!comprobarInferiores(piezaActual, tablero, reglas)) {
                 while(reglas.filaCompleta(this.tablero.getMatrizTablero(), tablero)){
-                    puntuacion += 30;
-                    muestraPuntos.setText(puntuacion+"");
+                    this.puntuacion += 30;
+                    muestraPuntos.setText(this.puntuacion+"");
                 }
                 piezaActual = piezas.get(0);
                 piezas.remove(0);
@@ -747,6 +748,8 @@ public class ActivityJuego extends Activity {
 
         finish();
         Intent intent = new Intent(this, ActivityGameOver.class);
+        intent.putExtra("puntuacion",this.puntuacion);
+        intent.putExtra("modo",this.modoDeJuego);
         startActivity(intent);
 
     }

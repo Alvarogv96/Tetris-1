@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -26,6 +27,7 @@ public class ActivityGameOver extends Activity {
     private Button volver;
     private Button añadir;
     private EditText editText;
+    private TextView puntuacion;
     private String nombreArchivo = "Ranking.txt";
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,9 @@ public class ActivityGameOver extends Activity {
         this.verRanking = findViewById(R.id.botonVerRanking);
         this.añadir = findViewById(R.id.botonAñadir);
         this.editText = findViewById(R.id.entradaNombre);
+        this.puntuacion = findViewById(R.id.textViewPuntuacion);
+
+        this.puntuacion.setText(getIntent().getIntExtra("puntuacion",0)+ " puntos");
 
     }
 
@@ -47,31 +52,13 @@ public class ActivityGameOver extends Activity {
     }
 
 
-   /* public void insertarNombre(View view) throws IOException {
-
-        String archivos [] = fileList();
-
-        if(existeArchivo(archivos,this.nombreArchivo)){
-            /*InputStreamReader reader = new InputStreamReader(openFileInput(this.nombreArchivo));
-            BufferedReader buffer = new BufferedReader(reader);
-
-            OutputStreamWriter writer = new OutputStreamWriter((openFileOutput(this.nombreArchivo,Activity.MODE_PRIVATE)));
-            writer.write(this.editText.getText().toString());
-            writer.flush();
-            writer.close();
-        }
-        else{
-            //Crear archivo e insertar nombre
-        }
-
-
-
+   public void insertarNombre(View view){
         this.volver.setEnabled(true);
         this.tryAgain.setEnabled(true);
         this.verRanking.setEnabled(true);
         this.añadir.setEnabled(false);
         this.editText.setEnabled(false);
-    }*/
+    }
 
 
     public void jugarDeNuevo(View view){
@@ -82,7 +69,12 @@ public class ActivityGameOver extends Activity {
 
     public void verRanking(View view){
         finish();
+
         Intent intent = new Intent(this, ActivityRanking.class);
+        intent.putExtra("puntuacion",getIntent().getIntExtra("puntuacion",0));
+        intent.putExtra("nombre",this.editText.getText());
+        intent.putExtra("modo",getIntent().getIntExtra("modo",0));
+
         startActivity(intent);
     }
 }
