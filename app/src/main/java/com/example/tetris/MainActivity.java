@@ -18,11 +18,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView modos;
     private List<String> modosDeJuego;
     private int numeroModo;
+    private int paleta;
 
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.paleta = getIntent().getIntExtra("paleta",0);
 
         this.modos = findViewById(R.id.vistaModo);
 
@@ -42,10 +45,23 @@ public class MainActivity extends AppCompatActivity {
     public void ejecutarJuego(View view){
         finish();
         Intent intent = new Intent(this, ActivityJuego.class);
-        intent.putExtra("modo",this.modosDeJuego.get(this.numeroModo));
+        intent.putExtra("modo",this.numeroModo);
+        intent.putExtra("paleta",this.paleta);
         startActivity(intent);
     }
 
+    public void ejecutarOpciones(View view){
+        finish();
+        Intent intent = new Intent(this, ActivityColores.class);
+        intent.putExtra("paleta",this.paleta);
+        startActivity(intent);
+    }
+
+    public void ejecutarRanking(View view){
+        finish();
+        Intent intent = new Intent(this, ActivityGameOver.class);
+        startActivity(intent);
+    }
 
     public void ejecutarSalir(View view){
         this.finish();

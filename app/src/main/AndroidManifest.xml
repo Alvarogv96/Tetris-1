@@ -5,8 +5,6 @@
 
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity android:name=".ActivityColores"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,17 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ActivityJuego">
-        </activity>
-
-        <activity android:name=".ActivityGameOver">
-        </activity>
-
-        <activity android:name=".ActivityRanking">
-
-        </activity>
-
+        <activity android:name=".ActivityJuego"></activity>
+        <activity android:name=".ActivityGameOver"></activity>
+        <activity android:name=".ActivityRanking"></activity>
     </application>
 
 </manifest>
