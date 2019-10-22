@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.paleta = getIntent().getIntExtra("paleta",0);
-
         this.modos = findViewById(R.id.vistaModo);
 
         this.inicializarListaDeModos();
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         finish();
         Intent intent = new Intent(this, ActivityJuego.class);
         intent.putExtra("modo",this.numeroModo);
-        intent.putExtra("paleta",this.paleta);
+        intent.putExtra("modo",this.modosDeJuego.get(this.numeroModo));
         startActivity(intent);
     }
 
