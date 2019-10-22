@@ -1044,6 +1044,4 @@ public class ActivityJuego extends Activity {
 
     }
 
-
-
 }
