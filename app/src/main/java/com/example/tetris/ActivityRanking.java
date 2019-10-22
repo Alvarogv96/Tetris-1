@@ -22,7 +22,10 @@ public class ActivityRanking extends Activity{
 
     private final String rutaFichero = "RankingTetris.txt";
     private final int apartadosRanking = 10;
-    private TextView textViewRanking;
+
+    private TextView textViewRankingNombre;
+    private TextView textViewRankingModo;
+    private TextView textViewRankingPuntuacion;
 
     private boolean datoNuevo;
 
@@ -32,7 +35,10 @@ public class ActivityRanking extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
 
-        this.textViewRanking = findViewById(R.id.textViewRanking);
+        //this.textViewRanking = findViewById(R.id.textViewRanking);
+        this.textViewRankingNombre = findViewById(R.id.textViewRanking1);
+        this.textViewRankingModo = findViewById(R.id.textViewRanking2);
+        this.textViewRankingPuntuacion = findViewById(R.id.textViewRanking3);
 
         this.datoNuevo = getIntent().getBooleanExtra("datoNuevo",Boolean.FALSE);
 
@@ -143,23 +149,30 @@ public class ActivityRanking extends Activity{
     }
 
     public void mostrarEnActividad(List<DatosRanking> datosRanking){
-        String linea ="";
 
-        linea = linea + meteEspacios("Nombre",14);
-        linea = linea + meteEspacios("Modo",9);
-        linea = linea + "Puntuacion";
-        linea = linea + "\n";
+        String text1 = "";
+        String text2 = "";
+        String text3 = "";
+
+
+        text1 = meteEspacios("Nombre",15) + "\n";
+        text2 = meteEspacios("Modo",10) + "\n";
+        text3 = meteEspacios("Puntuación",10) + "\n";
+
 
         for(DatosRanking aux:datosRanking){
-            linea = linea + meteEspacios(aux.getNombre(),14);
-            linea = (linea + meteEspacios(aux.modo,9));
-            linea = linea + aux.puntuacion;
-            linea = linea + "\n";
 
+            text1 = text1 + meteEspacios(aux.getNombre(),15) + "\n";
+
+            text2 = text2 + meteEspacios(aux.getModo(),10) + "\n";
+
+            text3 = text3 + aux.puntuacion + "\n";
 
         }
 
-        this.textViewRanking.setText(linea);
+        this.textViewRankingNombre.setText(text1);
+        this.textViewRankingModo.setText(text2);
+        this.textViewRankingPuntuacion.setText(text3);
     }
 
 

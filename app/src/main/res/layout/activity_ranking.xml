@@ -42,16 +42,46 @@
             android:layout_gravity="center"
             android:text="@string/Ranking"
             android:textSize="30sp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:layout_marginBottom="20dp"/>
 
-        <TextView
-            android:id="@+id/textViewRanking"
-            android:layout_width="219dp"
-            android:layout_height="444dp"
-            android:ems="10"
-            android:layout_gravity="center"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
-            />
+
+            <TextView
+                android:id="@+id/textViewRanking1"
+                android:layout_width="125dp"
+                android:layout_height="444dp"
+                android:ems="10"
+                android:layout_gravity="center"
+                android:layout_marginStart="60dp"
+                />
+
+            <TextView
+                android:id="@+id/textViewRanking2"
+                android:layout_width="75dp"
+                android:layout_height="444dp"
+                android:ems="10"
+                android:layout_gravity="center"
+
+                />
+
+            <TextView
+                android:id="@+id/textViewRanking3"
+                android:layout_width="75dp"
+                android:layout_height="444dp"
+                android:ems="10"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+
+
+
 
     </LinearLayout>
 
