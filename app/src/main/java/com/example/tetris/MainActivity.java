@@ -56,13 +56,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("paleta",this.paleta);
         startActivity(intent);
     }
-
-    public void ejecutarRanking(View view){
-        finish();
-        Intent intent = new Intent(this, ActivityGameOver.class);
-        startActivity(intent);
-    }
-
+    
     public void ejecutarSalir(View view){
         this.finish();
     }
