@@ -762,7 +762,15 @@ public class ActivityJuego extends Activity {
                         case 3:
                             auxCCVerde(color,vista);
                             break;
-
+                        case 4:
+                            auxCCAmarillo(color, vista);
+                            break;
+                        case 5:
+                            auxCCNaranja(color, vista);
+                            break;
+                        case 6:
+                            auxCCMarron(color,vista);
+                            break;
                     }
                 }
 
@@ -907,6 +915,114 @@ public class ActivityJuego extends Activity {
                             break;
                         case 7:
                             vista.setBackgroundColor(Color.parseColor("#224237"));
+
+                            break;
+                    }
+                }
+                private  void auxCCAmarillo(int color, TextView vista){
+                    switch(color) {
+                        case 0:
+                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+                            break;
+                        case 1:
+                            vista.setBackgroundColor(Color.parseColor("#f2fa0a"));
+
+                            break;
+                        case 2:
+                            vista.setBackgroundColor(Color.parseColor("#c5cc08"));
+
+                            break;
+                        case 3:
+                            vista.setBackgroundColor(Color.parseColor("#8f9404"));
+
+                            break;
+                        case 4:
+                            vista.setBackgroundColor(Color.parseColor("#606304"));
+
+                            break;
+                        case 5:
+                            vista.setBackgroundColor(Color.parseColor("#70731f"));
+
+                            break;
+                        case 6:
+                            vista.setBackgroundColor(Color.parseColor("#939636"));
+
+                            break;
+                        case 7:
+                            vista.setBackgroundColor(Color.parseColor("#c1c462"));
+
+                            break;
+                    }
+                }
+                private  void auxCCNaranja(int color, TextView vista){
+                    switch(color) {
+                        case 0:
+                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+                            break;
+                        case 1:
+                            vista.setBackgroundColor(Color.parseColor("#c4a062"));
+
+                            break;
+                        case 2:
+                            vista.setBackgroundColor(Color.parseColor("#c4923b"));
+
+                            break;
+                        case 3:
+                            vista.setBackgroundColor(Color.parseColor("#a6741e"));
+
+                            break;
+                        case 4:
+                            vista.setBackgroundColor(Color.parseColor("#d18708"));
+
+                            break;
+                        case 5:
+                            vista.setBackgroundColor(Color.parseColor("#f59b00"));
+
+                            break;
+                        case 6:
+                            vista.setBackgroundColor(Color.parseColor("#f7b748"));
+
+                            break;
+                        case 7:
+                            vista.setBackgroundColor(Color.parseColor("#f0bc62"));
+
+                            break;
+                    }
+                }
+                private  void auxCCMarron(int color, TextView vista){
+                    switch(color) {
+                        case 0:
+                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+                            break;
+                        case 1:
+                            vista.setBackgroundColor(Color.parseColor("#803903"));
+
+                            break;
+                        case 2:
+                            vista.setBackgroundColor(Color.parseColor("#733f18"));
+
+                            break;
+                        case 3:
+                            vista.setBackgroundColor(Color.parseColor("#704728"));
+
+                            break;
+                        case 4:
+                            vista.setBackgroundColor(Color.parseColor("#75543b"));
+
+                            break;
+                        case 5:
+                            vista.setBackgroundColor(Color.parseColor("#8f6e56"));
+
+                            break;
+                        case 6:
+                            vista.setBackgroundColor(Color.parseColor("#ab8468"));
+
+                            break;
+                        case 7:
+                            vista.setBackgroundColor(Color.parseColor("#ad744b"));
 
                             break;
                     }

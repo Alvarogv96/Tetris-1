@@ -41,6 +41,9 @@ public class ActivityColores extends AppCompatActivity {
         this.listaPaletas.add("Roja");
         this.listaPaletas.add("Azul");
         this.listaPaletas.add("Verde");
+        this.listaPaletas.add("Amarillo");
+        this.listaPaletas.add("Naranja");
+        this.listaPaletas.add("Marrón");
     }
 
     public void anterior(View view){
