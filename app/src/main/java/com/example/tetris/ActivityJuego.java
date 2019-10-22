@@ -564,7 +564,6 @@ public class ActivityJuego extends Activity {
             tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
         }
 
-        this.actualizarTablero(tablero.getMatrizTablero());
 
 
         return tablero;
@@ -681,8 +680,10 @@ public class ActivityJuego extends Activity {
                 tablero = this.seleccionarMovimiento(piezaActual, tablero, reglas);
             }
 
+            if(comprobarInferiores(piezaActual, tablero, reglas)){
+                tablero = this.bajarPieza(piezaActual, tablero, reglas);
+            }
 
-            tablero = this.bajarPieza(piezaActual, tablero, reglas);
 
 
             try {
@@ -752,19 +753,6 @@ public class ActivityJuego extends Activity {
         intent.putExtra("modo",this.modoDeJuego);
         startActivity(intent);
 
-    }
-
-
-    public static void actualizarTablero(int[][] matriz){
-        int index = 0;
-
-        for (int i = 4; i<=23; i++){
-            for (int j=0;j<=9;j++){
-                TextView auxiliar  = (TextView)ListaCeldas.get(index);
-                cambiarColor(matriz[i][j],auxiliar);
-                index ++;
-            }
-        }
     }
 
 
