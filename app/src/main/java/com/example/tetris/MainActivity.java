@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public void ejecutarJuego(View view){
         finish();
         Intent intent = new Intent(this, ActivityJuego.class);
-        intent.putExtra("modo",this.numeroModo);
+        intent.putExtra("paleta",this.paleta);
         intent.putExtra("modo",this.modosDeJuego.get(this.numeroModo));
         startActivity(intent);
     }
