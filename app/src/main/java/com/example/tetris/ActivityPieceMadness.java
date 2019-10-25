@@ -23,7 +23,8 @@ public class ActivityPieceMadness extends AppCompatActivity {
 
     private int puntuacion;
     private String modoDeJuego;
-    
+    private long ini;
+    private long fin;
     private final long timerNormal = 500;
     private final long timerRapido = 500;
     private final int nPiezasEnElArray = 2;
@@ -489,7 +490,9 @@ public class ActivityPieceMadness extends AppCompatActivity {
         this.listaMovimientos.add(3);
     }
 
-
+    public void bajaRapido(View vista){
+        this.listaMovimientos.add(4);
+    }
     private Tablero borrarPieza(Pieza pieza, Tablero tablero){
 
         tablero.actualizarTablero(pieza.getCoords(),0);
@@ -560,7 +563,6 @@ public class ActivityPieceMadness extends AppCompatActivity {
         }else{
             tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
         }
-
         return tablero;
     }
 
@@ -602,6 +604,11 @@ public class ActivityPieceMadness extends AppCompatActivity {
                     break;
                 case 3:
                     tablero = this.hacerRotaciones(piezaActual,tablero,reglas,1);
+                    break;
+                case 4:
+                    if(comprobarInferiores(piezaActual, tablero, reglas)){
+                        tablero = this.bajarPieza(piezaActual, tablero, reglas);
+                    }
                     break;
             }
             this.listaMovimientos.clear();

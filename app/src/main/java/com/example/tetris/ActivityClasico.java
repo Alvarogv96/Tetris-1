@@ -565,9 +565,6 @@ public class ActivityClasico extends Activity {
         }else{
             tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
         }
-
-
-
         return tablero;
     }
 
