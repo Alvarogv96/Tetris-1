@@ -2,6 +2,7 @@ package com.example.tetris;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,6 +21,9 @@ public class ActivityPieceMadness extends AppCompatActivity {
     private static ArrayList<TextView> ListaCeldas;
     private TextView ayuda;
 
+    private int puntuacion;
+    private String modoDeJuego;
+    
     private final long timerNormal = 500;
     private final long timerRapido = 500;
     private final int nPiezasEnElArray = 2;
@@ -40,6 +44,10 @@ public class ActivityPieceMadness extends AppCompatActivity {
         this.listaMovimientos = new LinkedList<>();
         this.tablero = new Tablero();
         this.reglas = new Reglas();
+
+        Intent intent = getIntent();
+        this.modoDeJuego = intent.getStringExtra("modo");
+
 
         ListaCeldas = new ArrayList<TextView>(200);
         ayuda = (TextView) findViewById(R.id.a1);
@@ -638,7 +646,7 @@ public class ActivityPieceMadness extends AppCompatActivity {
     int cont = 0;
     public void executea() {
         int contTiempo = 0;
-        int puntuacion = 0;
+        this.puntuacion = 0;
         boolean hayPiezaNormal = false;
         boolean hayPiezaDopada = false;
         boolean enEspera = false;
@@ -664,8 +672,8 @@ public class ActivityPieceMadness extends AppCompatActivity {
                 hayPiezaNormal = false;
                 if(!hayPiezaDopada){
                     while(reglas.filaCompleta(this.tablero.getMatrizTablero(), tablero)){
-                        puntuacion += 30;
-                        muestraPuntos.setText(puntuacion+"");
+                        this.puntuacion += 30;
+                        muestraPuntos.setText(this.puntuacion+"");
                     }
 
                     piezaActual = piezas.get(0);
@@ -789,6 +797,12 @@ public class ActivityPieceMadness extends AppCompatActivity {
 
 
         } while ((this.comprobarInferiores(piezaActual, tablero, reglas) & this.comprobarInferiores(piezaDopada, tablero, reglas)) | (!reglas.gameOver(piezaActual, tablero.getMatrizTablero()) & !reglas.gameOver(piezaDopada,tablero.getMatrizTablero())));
+
+        finish();
+        Intent intent = new Intent(this, ActivityGameOver.class);
+        intent.putExtra("puntuacion",this.puntuacion);
+        intent.putExtra("modo",this.modoDeJuego);
+        startActivity(intent);
 
     }
 
