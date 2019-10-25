@@ -24,6 +24,11 @@ public class ActivityJuego extends Activity {
     private String modoDeJuego;
     private int puntuacion;
 
+    protected int contadorFilas;
+    protected boolean eliminarUnaFila;
+
+
+
     private long ini;
     private long fin;
 
@@ -658,9 +663,10 @@ public class ActivityJuego extends Activity {
         piezas.add(pieza);
 
         do {
-
+            this.contadorFilas=0;
             if (!comprobarInferiores(piezaActual, tablero, reglas)) {
                 while(reglas.filaCompleta(this.tablero.getMatrizTablero(), tablero)){
+                    contadorFilas ++;
                     this.puntuacion += 30;
                     muestraPuntos.setText(this.puntuacion+"");
                 }
@@ -739,6 +745,7 @@ public class ActivityJuego extends Activity {
                         for (int j=0;j<=9;j++){
                             TextView auxiliar  = (TextView)ListaCeldas.get(index);
                             cambiarColor(matrizTablero[i][j],auxiliar,paletaSeleccionada);
+                            colorEliminar(matrizTablero[i][j],auxiliar);
                             index ++;
                         }
                     }
@@ -746,9 +753,96 @@ public class ActivityJuego extends Activity {
                 }
 
 
+                public void colorEliminar(int color, TextView vista){
+
+                    if (eliminarUnaFila && (contadorFilas == 1)){
+                        auxModoMulticolor(color,vista);
+                        eliminarUnaFila = false;
+                        contadorFilas = 0;
+                    }else if(!eliminarUnaFila && (contadorFilas == 1)){
+                        auxModoMonoCroma(color,vista);
+                        eliminarUnaFila = true;
+                    }
+
+
+                }
+
+                private  void auxModoMulticolor(int color, TextView vista){
+                    switch(color) {
+                        case 0:
+                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+                            break;
+                        case 1:
+                            vista.setBackgroundColor(Color.parseColor("#00FFFF"));
+
+                            break;
+                        case 2:
+                            vista.setBackgroundColor(Color.parseColor("#cc00cc"));
+
+                            break;
+                        case 3:
+                            vista.setBackgroundColor(Color.parseColor("#0000FF"));
+
+                            break;
+                        case 4:
+                            vista.setBackgroundColor(Color.parseColor("#FF6600"));
+
+                            break;
+                        case 5:
+                            vista.setBackgroundColor(Color.parseColor("#FFFF00"));
+
+                            break;
+                        case 6:
+                            vista.setBackgroundColor(Color.parseColor("#33cc33"));
+
+                            break;
+                        case 7:
+                            vista.setBackgroundColor(Color.parseColor("#FF0000"));
+
+                            break;
+                    }
+                }
+
+                private  void auxModoMonoCroma(int color, TextView vista){
+                    switch(color) {
+                        case 0:
+                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+                            break;
+                        case 1:
+                            vista.setBackgroundColor(Color.parseColor("#008000"));
+
+                            break;
+                        case 2:
+                            vista.setBackgroundColor(Color.parseColor("#008000"));
+
+                            break;
+                        case 3:
+                            vista.setBackgroundColor(Color.parseColor("#008000"));
+
+                            break;
+                        case 4:
+                            vista.setBackgroundColor(Color.parseColor("#008000"));
+
+                            break;
+                        case 5:
+                            vista.setBackgroundColor(Color.parseColor("#008000"));
+
+                            break;
+                        case 6:
+                            vista.setBackgroundColor(Color.parseColor("#008000"));
+
+                            break;
+                        case 7:
+                            vista.setBackgroundColor(Color.parseColor("#008000"));
+
+                            break;
+                    }
+                }
+
 
                 public void cambiarColor(int color, TextView vista, int paletaSeleccion){
-
                     switch(paletaSeleccion){
                         case 0:
                             auxCCOriginal(color,vista);
