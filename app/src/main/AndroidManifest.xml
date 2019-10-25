@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ActivityJuego">
+        <activity android:name=".ActivityClasico">
         </activity>
 
         <activity android:name=".ActivityGameOver">
@@ -38,6 +38,8 @@
         <activity android:name=".ActivityColores">
 
         </activity>
+
+        <activity android:name=".ActivityPieceMadness"></activity>
 
     </application>
 

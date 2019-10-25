@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -37,13 +35,27 @@ public class MainActivity extends AppCompatActivity {
         this.numeroModo=0;
         this.modosDeJuego = new LinkedList<String>();
         this.modosDeJuego.add("Clasico");
-        this.modosDeJuego.add("Modo2");
+        this.modosDeJuego.add("Piece Madness");
         this.modosDeJuego.add("Modo3");
     }
 
     public void ejecutarJuego(View view){
         finish();
-        Intent intent = new Intent(this, ActivityJuego.class);
+
+        Intent intent;
+
+        switch(this.modosDeJuego.get(this.numeroModo)){
+            case "Clasico":
+                intent = new Intent(this, ActivityClasico.class);
+                break;
+            case "Piece Madness":
+                intent = new Intent(this, ActivityPieceMadness.class);
+                break;
+            default:
+                intent = new Intent(this, ActivityClasico.class);
+        }
+
+
         intent.putExtra("paleta",this.paleta);
         intent.putExtra("modo",this.modosDeJuego.get(this.numeroModo));
         startActivity(intent);

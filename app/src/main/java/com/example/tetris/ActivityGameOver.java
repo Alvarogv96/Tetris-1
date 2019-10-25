@@ -1,7 +1,6 @@
 package com.example.tetris;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,16 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 public class ActivityGameOver extends Activity {
 
@@ -63,7 +52,7 @@ public class ActivityGameOver extends Activity {
 
     public void jugarDeNuevo(View view){
         finish();
-        Intent intent = new Intent(this, ActivityJuego.class);
+        Intent intent = new Intent(this, ActivityClasico.class);
         startActivity(intent);
     }
 

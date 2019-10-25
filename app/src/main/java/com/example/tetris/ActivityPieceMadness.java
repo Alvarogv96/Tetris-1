@@ -1,7 +1,7 @@
 package com.example.tetris;
 
-import android.app.Activity;
-import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,24 +9,19 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import android.widget.TextView;
 
-public class ActivityJuego extends Activity {
+public class ActivityPieceMadness extends AppCompatActivity {
+
     private static ArrayList<TextView> ListaCeldas;
     private TextView ayuda;
 
-    private final long timer = 1000;
-
-    private String modoDeJuego;
-    private int puntuacion;
-
-    private long ini;
-    private long fin;
-
+    private final long timerNormal = 500;
+    private final long timerRapido = 500;
     private final int nPiezasEnElArray = 2;
     List<Integer> listaMovimientos;
     List<Pieza> piezas;
@@ -34,22 +29,18 @@ public class ActivityJuego extends Activity {
     Reglas reglas;
     Handler handler = new Handler();
 
-    int paletaSeleccionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_juego);
+        setContentView(R.layout.activity_piecemadness);
 
         this.piezas = new LinkedList<>();
         this.listaMovimientos = new LinkedList<>();
         this.tablero = new Tablero();
         this.reglas = new Reglas();
-        Intent intent = getIntent();
-        this.modoDeJuego = intent.getStringExtra("modo");
-        this.paletaSeleccionada = intent.getIntExtra("paleta",0);
+
         ListaCeldas = new ArrayList<TextView>(200);
         ayuda = (TextView) findViewById(R.id.a1);
         ListaCeldas.add(ayuda);
@@ -490,10 +481,6 @@ public class ActivityJuego extends Activity {
         this.listaMovimientos.add(3);
     }
 
-    public void bajaRapido(View vista){
-        this.listaMovimientos.add(4);
-    }
-
 
     private Tablero borrarPieza(Pieza pieza, Tablero tablero){
 
@@ -566,6 +553,7 @@ public class ActivityJuego extends Activity {
             tablero.actualizarTablero(piezaAux.getCoords(), pieza.getColor());
         }
 
+        this.actualizarTablero(tablero.getMatrizTablero());
 
 
         return tablero;
@@ -610,9 +598,6 @@ public class ActivityJuego extends Activity {
                 case 3:
                     tablero = this.hacerRotaciones(piezaActual,tablero,reglas,1);
                     break;
-                case 4:
-                    this.ini=this.fin;
-                    break;
             }
             this.listaMovimientos.clear();
         }
@@ -620,6 +605,17 @@ public class ActivityJuego extends Activity {
         return tablero;
     }
 
+    public boolean permisoGeneracion(int [][] tablero){
+        boolean permiso = true;
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < 10; j++){
+                if (tablero[i][j] != 0){
+                    permiso = false;
+                }
+            }
+        }
+        return permiso;
+    }
 
     public void iniciarChingada(){
         Runnable runnable = new Runnable() {
@@ -641,8 +637,12 @@ public class ActivityJuego extends Activity {
 
     int cont = 0;
     public void executea() {
-
-        this.puntuacion = 0;
+        int contTiempo = 0;
+        int puntuacion = 0;
+        boolean hayPiezaNormal = false;
+        boolean hayPiezaDopada = false;
+        boolean enEspera = false;
+        Pieza piezaDopada = new Pieza(0);
 
         TextView muestraPuntos = (TextView) findViewById(R.id.textView3);
 
@@ -656,37 +656,79 @@ public class ActivityJuego extends Activity {
         tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
         Pieza pieza = new Pieza((int) (Math.random() * 7 + 1));
         piezas.add(pieza);
+        hayPiezaNormal = true;
 
         do {
 
             if (!comprobarInferiores(piezaActual, tablero, reglas)) {
-                while(reglas.filaCompleta(this.tablero.getMatrizTablero(), tablero)){
-                    this.puntuacion += 30;
-                    muestraPuntos.setText(this.puntuacion+"");
+                hayPiezaNormal = false;
+                if(!hayPiezaDopada){
+                    while(reglas.filaCompleta(this.tablero.getMatrizTablero(), tablero)){
+                        puntuacion += 30;
+                        muestraPuntos.setText(puntuacion+"");
+                    }
+
+                    piezaActual = piezas.get(0);
+                    piezas.remove(0);
+                    tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
+                    Pieza aux = new Pieza((int) (Math.random() * 7 + 1));
+                    piezas.add(aux);
+                    hayPiezaNormal = true;
                 }
-                piezaActual = piezas.get(0);
-                piezas.remove(0);
-                tablero.actualizarTablero(piezaActual.getCoords(), piezaActual.getColor());
-                Pieza aux = new Pieza((int) (Math.random() * 7 + 1));
-                piezas.add(aux);
 
             }
 
+            if(!comprobarInferiores(piezaDopada, tablero, reglas)){
+                hayPiezaDopada = false;
+                contTiempo = 0;
+                piezaDopada = new Pieza(0);
+            }
 
-            this.ini = 0;
-            this.fin = System.currentTimeMillis() + this.timer;
+            //Comprobar si han pasado 30 segundos, si no hay ya una pieza rÃ¡pida y si tiene espacio para generarse.
+            if(contTiempo >= 30000 & !hayPiezaDopada & permisoGeneracion(tablero.getMatrizTablero())){
+                piezaDopada = piezas.get(0);
+                if(comprobarInferiores(piezaDopada, tablero, reglas)){
+                    piezas.remove(0);
+                    hayPiezaDopada = true;
+                    //contTiempo = 0;
+                    tablero.actualizarTablero(piezaDopada.getCoords(), piezaDopada.getColor());
+                    Pieza aux = new Pieza((int) (Math.random() * 7 + 1));
+                    piezas.add(aux);
+                }
+            }
 
-            while (this.ini < this.fin) {
-                this.ini = System.currentTimeMillis();
+            long ini1 = 0;
+            long fin1 = System.currentTimeMillis() + this.timerNormal;
 
-                tablero = this.seleccionarMovimiento(piezaActual, tablero, reglas);
+            long ini2 = 0;
+            long fin2 = System.currentTimeMillis() + this.timerRapido;
+
+            while (ini1 < fin1) {
+                ini1 = System.currentTimeMillis();
+
+                //SI hay una pieza rÃ¡pida,solo se controlarÃ¡ esta.
+                if(hayPiezaDopada){
+                    while(ini2 < fin2){
+                        ini2 = System.currentTimeMillis();
+                        tablero = this.seleccionarMovimiento(piezaDopada, tablero, reglas);
+                    }
+                    if(comprobarInferiores(piezaDopada, tablero, reglas)){
+                        tablero = this.bajarPieza(piezaDopada, tablero, reglas);
+                    }
+
+                }
+
+                if(!hayPiezaDopada){
+                    tablero = this.seleccionarMovimiento(piezaActual, tablero, reglas);
+                }
+
             }
 
             if(comprobarInferiores(piezaActual, tablero, reglas)){
                 tablero = this.bajarPieza(piezaActual, tablero, reglas);
             }
 
-
+            contTiempo += 500;
 
             try {
                 Thread.sleep(16);
@@ -738,310 +780,67 @@ public class ActivityJuego extends Activity {
                     for (int i = 4; i<=23; i++){
                         for (int j=0;j<=9;j++){
                             TextView auxiliar  = (TextView)ListaCeldas.get(index);
-                            cambiarColor(matrizTablero[i][j],auxiliar,paletaSeleccionada);
+                            cambiarColor(matrizTablero[i][j],auxiliar);
                             index ++;
                         }
                     }
-
                 }
-
-
-
-                public void cambiarColor(int color, TextView vista, int paletaSeleccion){
-
-                    switch(paletaSeleccion){
-                        case 0:
-                            auxCCOriginal(color,vista);
-                            break;
-                        case 1:
-                            auxCCRojo(color,vista);
-                            break;
-                        case 2:
-                            auxCCAzul(color,vista);
-                            break;
-                        case 3:
-                            auxCCVerde(color,vista);
-                            break;
-                        case 4:
-                            auxCCAmarillo(color, vista);
-                            break;
-                        case 5:
-                            auxCCNaranja(color, vista);
-                            break;
-                        case 6:
-                            auxCCMarron(color,vista);
-                            break;
-                    }
-                }
-
-                private  void auxCCOriginal(int color, TextView vista){
-                    switch(color) {
-                        case 0:
-                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
-
-                            break;
-                        case 1:
-                            vista.setBackgroundColor(Color.parseColor("#00FFFF"));
-
-                            break;
-                        case 2:
-                            vista.setBackgroundColor(Color.parseColor("#cc00cc"));
-
-                            break;
-                        case 3:
-                            vista.setBackgroundColor(Color.parseColor("#0000FF"));
-
-                            break;
-                        case 4:
-                            vista.setBackgroundColor(Color.parseColor("#FF6600"));
-
-                            break;
-                        case 5:
-                            vista.setBackgroundColor(Color.parseColor("#FFFF00"));
-
-                            break;
-                        case 6:
-                            vista.setBackgroundColor(Color.parseColor("#33cc33"));
-
-                            break;
-                        case 7:
-                            vista.setBackgroundColor(Color.parseColor("#FF0000"));
-
-                            break;
-                    }
-                }
-
-                private  void auxCCRojo(int color, TextView vista){
-                    switch(color) {
-                        case 0:
-                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
-
-                            break;
-                        case 1:
-                            vista.setBackgroundColor(Color.parseColor("#e31235"));
-
-                            break;
-                        case 2:
-                            vista.setBackgroundColor(Color.parseColor("#ad112b"));
-
-                            break;
-                        case 3:
-                            vista.setBackgroundColor(Color.parseColor("#c93a52"));
-
-                            break;
-                        case 4:
-                            vista.setBackgroundColor(Color.parseColor("#661624"));
-
-                            break;
-                        case 5:
-                            vista.setBackgroundColor(Color.parseColor("#872b4d"));
-
-                            break;
-                        case 6:
-                            vista.setBackgroundColor(Color.parseColor("#b55075"));
-
-                            break;
-                        case 7:
-                            vista.setBackgroundColor(Color.parseColor("#d9628d"));
-
-                            break;
-                    }
-                }
-                private  void auxCCAzul(int color, TextView vista){
-                    switch(color) {
-                        case 0:
-                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
-
-                            break;
-                        case 1:
-                            vista.setBackgroundColor(Color.parseColor("#7462d9"));
-
-                            break;
-                        case 2:
-                            vista.setBackgroundColor(Color.parseColor("#4227d9"));
-
-                            break;
-                        case 3:
-                            vista.setBackgroundColor(Color.parseColor("#5e43f7"));
-
-                            break;
-                        case 4:
-                            vista.setBackgroundColor(Color.parseColor("#271780"));
-
-                            break;
-                        case 5:
-                            vista.setBackgroundColor(Color.parseColor("#28548a"));
-
-                            break;
-                        case 6:
-                            vista.setBackgroundColor(Color.parseColor("#3781a6"));
-
-                            break;
-                        case 7:
-                            vista.setBackgroundColor(Color.parseColor("#4e9fbf"));
-
-                            break;
-                    }
-                }
-                private  void auxCCVerde(int color, TextView vista){
-                    switch(color) {
-                        case 0:
-                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
-
-                            break;
-                        case 1:
-                            vista.setBackgroundColor(Color.parseColor("#0d6e1a"));
-
-                            break;
-                        case 2:
-                            vista.setBackgroundColor(Color.parseColor("#119c24"));
-
-                            break;
-                        case 3:
-                            vista.setBackgroundColor(Color.parseColor("#298047"));
-
-                            break;
-                        case 4:
-                            vista.setBackgroundColor(Color.parseColor("#52ab71"));
-
-                            break;
-                        case 5:
-                            vista.setBackgroundColor(Color.parseColor("#386347"));
-
-                            break;
-                        case 6:
-                            vista.setBackgroundColor(Color.parseColor("#386354"));
-
-                            break;
-                        case 7:
-                            vista.setBackgroundColor(Color.parseColor("#224237"));
-
-                            break;
-                    }
-                }
-                private  void auxCCAmarillo(int color, TextView vista){
-                    switch(color) {
-                        case 0:
-                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
-
-                            break;
-                        case 1:
-                            vista.setBackgroundColor(Color.parseColor("#f2fa0a"));
-
-                            break;
-                        case 2:
-                            vista.setBackgroundColor(Color.parseColor("#c5cc08"));
-
-                            break;
-                        case 3:
-                            vista.setBackgroundColor(Color.parseColor("#8f9404"));
-
-                            break;
-                        case 4:
-                            vista.setBackgroundColor(Color.parseColor("#606304"));
-
-                            break;
-                        case 5:
-                            vista.setBackgroundColor(Color.parseColor("#70731f"));
-
-                            break;
-                        case 6:
-                            vista.setBackgroundColor(Color.parseColor("#939636"));
-
-                            break;
-                        case 7:
-                            vista.setBackgroundColor(Color.parseColor("#c1c462"));
-
-                            break;
-                    }
-                }
-                private  void auxCCNaranja(int color, TextView vista){
-                    switch(color) {
-                        case 0:
-                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
-
-                            break;
-                        case 1:
-                            vista.setBackgroundColor(Color.parseColor("#c4a062"));
-
-                            break;
-                        case 2:
-                            vista.setBackgroundColor(Color.parseColor("#c4923b"));
-
-                            break;
-                        case 3:
-                            vista.setBackgroundColor(Color.parseColor("#a6741e"));
-
-                            break;
-                        case 4:
-                            vista.setBackgroundColor(Color.parseColor("#d18708"));
-
-                            break;
-                        case 5:
-                            vista.setBackgroundColor(Color.parseColor("#f59b00"));
-
-                            break;
-                        case 6:
-                            vista.setBackgroundColor(Color.parseColor("#f7b748"));
-
-                            break;
-                        case 7:
-                            vista.setBackgroundColor(Color.parseColor("#f0bc62"));
-
-                            break;
-                    }
-                }
-                private  void auxCCMarron(int color, TextView vista){
-                    switch(color) {
-                        case 0:
-                            vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
-
-                            break;
-                        case 1:
-                            vista.setBackgroundColor(Color.parseColor("#803903"));
-
-                            break;
-                        case 2:
-                            vista.setBackgroundColor(Color.parseColor("#733f18"));
-
-                            break;
-                        case 3:
-                            vista.setBackgroundColor(Color.parseColor("#704728"));
-
-                            break;
-                        case 4:
-                            vista.setBackgroundColor(Color.parseColor("#75543b"));
-
-                            break;
-                        case 5:
-                            vista.setBackgroundColor(Color.parseColor("#8f6e56"));
-
-                            break;
-                        case 6:
-                            vista.setBackgroundColor(Color.parseColor("#ab8468"));
-
-                            break;
-                        case 7:
-                            vista.setBackgroundColor(Color.parseColor("#ad744b"));
-
-                            break;
-                    }
-                }
-
-
-
             });
 
 
-        } while (this.comprobarInferiores(piezaActual, tablero, reglas) | !reglas.gameOver(piezaActual, tablero.getMatrizTablero()));
+        } while ((this.comprobarInferiores(piezaActual, tablero, reglas) & this.comprobarInferiores(piezaDopada, tablero, reglas)) | (!reglas.gameOver(piezaActual, tablero.getMatrizTablero()) & !reglas.gameOver(piezaDopada,tablero.getMatrizTablero())));
+
+    }
 
 
-        finish();
-        Intent intent = new Intent(this, ActivityGameOver.class);
-        intent.putExtra("puntuacion",this.puntuacion);
-        intent.putExtra("modo",this.modoDeJuego);
-        startActivity(intent);
+    public static void actualizarTablero(int[][] matriz){
+        int index = 0;
 
+        for (int i = 4; i<=23; i++){
+            for (int j=0;j<=9;j++){
+                TextView auxiliar  = (TextView)ListaCeldas.get(index);
+                cambiarColor(matriz[i][j],auxiliar);
+                index ++;
+            }
+        }
+    }
+
+
+    public static void cambiarColor(int color, TextView vista){
+        switch(color) {
+            case 0:
+                vista.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+                break;
+            case 1:
+                vista.setBackgroundColor(Color.parseColor("#00FFFF"));
+
+                break;
+            case 2:
+                vista.setBackgroundColor(Color.parseColor("#cc00cc"));
+
+                break;
+            case 3:
+                vista.setBackgroundColor(Color.parseColor("#0000FF"));
+
+                break;
+            case 4:
+                vista.setBackgroundColor(Color.parseColor("#FF6600"));
+
+                break;
+            case 5:
+                vista.setBackgroundColor(Color.parseColor("#FFFF00"));
+
+                break;
+            case 6:
+                vista.setBackgroundColor(Color.parseColor("#33cc33"));
+
+                break;
+            case 7:
+                vista.setBackgroundColor(Color.parseColor("#FF0000"));
+
+                break;
+        }
     }
 
 }
