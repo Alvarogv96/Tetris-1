@@ -19,7 +19,7 @@ public class ActivityClasico extends Activity {
     private static ArrayList<TextView> ListaCeldas;
     private TextView ayuda;
 
-    private final long timer = 1000;
+    private final long timer = 500;
 
     private String modoDeJuego;
     private int puntuacion;
