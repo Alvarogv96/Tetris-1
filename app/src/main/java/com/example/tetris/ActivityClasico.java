@@ -611,7 +611,9 @@ public class ActivityClasico extends Activity {
                     tablero = this.hacerRotaciones(piezaActual,tablero,reglas,1);
                     break;
                 case 4:
-                    this.ini=this.fin;
+                    if(comprobarInferiores(piezaActual, tablero, reglas)) {
+                        tablero = this.bajarPieza(piezaActual, tablero, reglas);
+                    }
                     break;
             }
             this.listaMovimientos.clear();

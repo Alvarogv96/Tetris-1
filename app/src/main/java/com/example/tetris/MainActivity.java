@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         this.modosDeJuego = new LinkedList<String>();
         this.modosDeJuego.add("Clasico");
         this.modosDeJuego.add("Piece Madness");
-        this.modosDeJuego.add("Modo3");
+        this.modosDeJuego.add("Color Party");
     }
 
     public void ejecutarJuego(View view){
@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "Piece Madness":
                 intent = new Intent(this, ActivityPieceMadness.class);
+                break;
+            case "Color Party":
+                intent = new Intent(this, ActivityColorParty.class);
                 break;
             default:
                 intent = new Intent(this, ActivityClasico.class);
